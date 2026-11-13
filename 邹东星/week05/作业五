@@ -1,0 +1,515 @@
+"""
+transformer_sft.py — 把 transformer_lm.py 的「预训练」改造成「SFT 监督微调」
+
+【一句话区别】
+    预训练：labels = input_ids 自己，整段文本每个位置都算 loss（自监督）。
+    SFT   ：labels 里 prompt 部分全填 -100，只有 answer 部分算 loss（有监督）。
+    模型结构、参数量、因果掩码、位置编码 —— 一个字节都不用改。
+
+【改造对照表】
+    ┌────────────┬──────────────────────────┬────────────────────────────────┐
+    │ 项目       │ transformer_lm.py（预训练）│ 本文件（SFT）                    │
+    ├────────────┼──────────────────────────┼────────────────────────────────┤
+    │ 初始化     │ 随机初始化                 │ 加载 tf_mask.pt 的预训练权重      │
+    │ 数据       │ corpus_general.txt 原始语料│ 指令-回答对 (instruction, response)│
+    │ 样本       │ x=text[s:s+T], y 错一位    │ x=prompt+answer, y 只保留 answer  │
+    │ 词表       │ 4000 字                   │ 4000 字 + <pad>/<eos>/<unk>      │
+    │ loss       │ 全位置 cross_entropy       │ 加 ignore_index=-100，只算 answer │
+    │ 学习率     │ 1e-3                      │ 2e-4（小一个量级，否则冲垮预训练） │
+    │ 指标       │ 全位置 PPL / 末位 PPL      │ answer-token PPL + 生成正确率      │
+    │ 生成       │ 无限续写                   │ 生成到 <eos> 就停，按问答格式回答  │
+    └────────────┴──────────────────────────┴────────────────────────────────┘
+
+【SFT 的核心只有两行代码】
+    1) labels 构造：labels = [-100]*len(prompt) + answer_ids + [eos]      ← 见 build_example
+    2) loss 计算  ：F.cross_entropy(..., ignore_index=-100)              ← 见 train
+    其余全是数据工程。
+
+【用法】
+    python transformer_sft.py --init tf_mask.pt                        # 训练
+    python transformer_sft.py --init tf_mask.pt --epochs 60 --lr 2e-4  # 调参
+    python transformer_sft.py --ckpt sft_best.pt --chat "中国的首都是哪里"
+    python transformer_sft.py --init tf_mask.pt --compare              # 训练前 vs 训练后
+"""
+
+import argparse
+import json
+import math
+import os
+import random
+import time
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.utils.data import DataLoader, Dataset
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+# ═══════════════════ 特殊符号 ═══════════════════
+# 预训练语料里没有这几个符号，所以要扩词表（见 build_model_from_ckpt）
+PAD, EOS, UNK = "<pad>", "<eos>", "<unk>"
+SPECIALS = [PAD, EOS, UNK]
+
+IGNORE = -100   # cross_entropy 的 ignore_index：label 等于它的位置不参与 loss
+
+# 对话模板。真实工程里这行就是 tokenizer.apply_chat_template(...)，作用完全一样：
+# 用一个固定格式告诉模型「哪段是问、哪段是答」，模型靠它区分边界
+TEMPLATE = "问：{}\n答："
+
+
+# ═══════════════════ 模型：和 transformer_lm.py 完全一致 ═══════════════════
+
+class TransformerLM(nn.Module):
+    """
+    可学习位置编码 + N 层 TransformerEncoderLayer（带因果掩码）+ 共享权重的输出头。
+
+    这个类和 transformer_lm.py 里的逐字相同 —— SFT 不需要动架构。
+    唯一新增的是 forward 允许传 labels，内部用 -100 屏蔽 prompt 部分。
+    """
+
+    def __init__(self, vocab_size, d_model=192, n_head=4, n_layer=4, max_len=512,
+                 dropout=0.1, use_pos=True, causal=True):
+        super().__init__()
+        self.causal = causal
+        self.use_pos = use_pos
+        self.tok = nn.Embedding(vocab_size, d_model)
+        self.pos = nn.Embedding(max_len, d_model) if use_pos else None
+        self.drop = nn.Dropout(dropout)
+
+        layer = nn.TransformerEncoderLayer(
+            d_model=d_model, nhead=n_head, dim_feedforward=4 * d_model,
+            dropout=dropout, activation="gelu", batch_first=True, norm_first=True,
+        )
+        self.encoder = nn.TransformerEncoder(
+            layer, num_layers=n_layer, norm=nn.LayerNorm(d_model),
+            enable_nested_tensor=False,
+        )
+        self.head = nn.Linear(d_model, vocab_size, bias=False)
+        self.head.weight = self.tok.weight          # weight tying，必须保留
+
+        nn.init.normal_(self.tok.weight, std=0.02)
+        if self.pos is not None:
+            nn.init.normal_(self.pos.weight, std=0.02)
+
+    def forward(self, idx):
+        # idx: (B, T) → logits: (B, T, V)
+        x = self.tok(idx)
+        if self.use_pos:
+            x = x + self.pos(torch.arange(idx.size(1), device=idx.device))
+        x = self.drop(x)
+        mask = None
+        if self.causal:
+            # 因果掩码：位置 t 只能看到 0..t。
+            # 它有个副作用是 SFT 的福音 —— 见 collate 里关于「右填充」的说明
+            mask = nn.Transformer.generate_square_subsequent_mask(
+                idx.size(1), device=idx.device)
+        x = self.encoder(x, mask=mask)
+        return self.head(x)
+
+
+# ═══════════════════ 加载预训练权重（SFT 的起点） ═══════════════════
+
+def build_model_from_ckpt(ckpt_path, dropout=0.0):
+    """
+    读 tf_mask.pt，重建同构模型，并把预训练权重装进去。
+
+    这里唯一有点技术含量的地方：SFT 要 3 个特殊符号，词表从 4000 扩到 4003，
+    而 nn.Embedding 的形状是固定的 —— 所以只能「新建一个大一点的 embedding，
+    把旧的 4000 行原样拷过去，新行按 std=0.02 随机初始化」。
+    这就是真实工程里 tokenizer.add_special_tokens(...) + model.resize_token_embeddings(n) 干的事。
+    """
+    ck = torch.load(ckpt_path, map_location="cpu", weights_only=False)
+    sd = ck["model_state"]
+    c = ck["args"]
+    char2idx, idx2char = dict(ck["char2idx"]), dict(ck["idx2char"])
+    V_old = len(char2idx)
+
+    # 1) 扩词表：特殊符号接在后面，旧 id 全部保持不变（否则旧 embedding 行就对不上了）
+    for s in SPECIALS:
+        if s not in char2idx:
+            char2idx[s] = len(char2idx)
+            idx2char[char2idx[s]] = s
+    V_new = len(char2idx)
+    pad_id, eos_id, unk_id = char2idx[PAD], char2idx[EOS], char2idx[UNK]
+
+    max_len = c["seq_len"]
+    model = TransformerLM(V_new, c["d_model"], c["heads"], c["layers"], max_len,
+                          dropout, use_pos=not c.get("no_pos", False),
+                          causal=not c.get("no_mask", False))
+
+    # 2) 装权重：tok.weight / head.weight 因为形状变了要单独拷前 V_old 行
+    old_tok = sd["tok.weight"]
+    rest = {k: v for k, v in sd.items() if k not in ("tok.weight", "head.weight")}
+    model.load_state_dict(rest, strict=False)
+    with torch.no_grad():
+        model.tok.weight[:V_old].copy_(old_tok)      # 旧的 4000 行原样保留
+        # 新的 3 行保持 __init__ 里的 std=0.02 随机初始化即可
+    model.head.weight = model.tok.weight             # tying 重新绑定（同一个 Parameter）
+
+    info = dict(char2idx=char2idx, idx2char=idx2char, pad_id=pad_id,
+                eos_id=eos_id, unk_id=unk_id, V=V_new, max_len=max_len,
+                base_args=c, n_old_vocab=V_old)
+    return model, info
+
+
+# ═══════════════════ SFT 数据 ═══════════════════
+
+# 内置的指令-回答对。真正做 SFT 时这里是几万条 jsonl，格式一样：
+#   {"instruction": "...", "response": "..."}
+SFT_PAIRS = [
+    ("中国的首都是哪里", "中国的首都是北京。"),
+    ("中国的首都是北京吗", "是的，中国的首都是北京。"),
+    ("你好", "你好，很高兴认识你。"),
+    ("你是谁", "我是一个语言模型。"),
+    ("你有名字吗", "我叫小助手。"),
+    ("谢谢", "不客气。"),
+    ("再见", "再见，祝你愉快。"),
+    ("你好厉害", "谢谢，我还在学习。"),
+    ("1加1等于几", "1加1等于2。"),
+    ("帮我算一下2加3", "2加3等于5。"),
+    ("请写一个数字", "四十二。"),
+    ("太阳从哪边升起", "太阳从东边升起。"),
+    ("一天有几个小时", "一天有二十四个小时。"),
+    ("一年有几个季节", "一年有四个季节。"),
+    ("地球是什么形状的", "地球是圆形的。"),
+    ("水的沸点是多少", "水在一百摄氏度沸腾。"),
+    ("举一个水果的例子", "苹果是一种水果。"),
+    ("什么动物会飞", "鸟会飞。"),
+    ("长城在哪里", "长城在中国北方。"),
+    ("你喜欢什么颜色", "我喜欢蓝色。"),
+    ("今天天气怎么样", "今天天气很好，适合出门。"),
+    ("明天会下雨吗", "我不知道，但你可以看天气预报。"),
+    ("我应该怎么学习", "你应该多读书，多练习。"),
+    ("我正在学编程", "学习编程需要多写代码。"),
+    ("什么是人工智能", "人工智能是让机器学习和判断的技术。"),
+    ("怎么才能身体健康", "多运动，注意休息。"),
+    ("早点休息", "好的，你也早点休息。"),
+    ("你吃饭了吗", "我不需要吃饭。"),
+]
+
+
+def build_example(question, answer, info, max_len):
+    """
+    ★★★ SFT 的全部秘密就在这个函数里 ★★★
+
+    把「问：X 答：Y」拼成一条完整序列，然后构造 (x, y)：
+
+        full = prompt_ids + answer_ids + [eos]
+        x    = full[:-1]                       # 输入：错开一位的前缀
+        y[t] = full[t+1]  如果 t+1 落在 answer 里
+             = -100       如果 t+1 还落在 prompt 里（prompt 不算 loss）
+
+    为什么 prompt 不算 loss：
+        prompt 是用户喂进来的、模型不需要「生成」的内容。如果也算 loss，
+        模型会去学「复述问题」；而且同一句话在不同上下文里答案不同，
+        把它当目标反而干扰。这是 SFT 与预训练在 loss 上唯一的实质区别。
+
+    注意 y 已经是「错开一位」的标签（和 transformer_lm.py 里 CharDataset 一样），
+    所以模型 forward 之后不用再 shift，直接用 y 对齐 logits。
+    """
+    prompt_ids = [info["char2idx"].get(ch, info["unk_id"])
+                  for ch in TEMPLATE.format(question)]
+    answer_ids = [info["char2idx"].get(ch, info["unk_id"]) for ch in answer]
+    answer_ids = answer_ids + [info["eos_id"]]      # 末尾一定要有 <eos>，否则模型学不会停
+
+    full = prompt_ids + answer_ids
+    if len(full) > max_len:
+        # 位置编码只有 max_len 行，超长必须截断。这里直接丢掉样本并提示，
+        # 真实工程的做法是「截断 prompt、保住 answer」或者扩长 max_len
+        return None
+
+    x = full[:-1]
+    n_prompt = len(prompt_ids)
+    y = [full[t + 1] if (t + 1) >= n_prompt else IGNORE for t in range(len(x))]
+
+    return {"x": x, "y": y, "prompt_len": n_prompt, "n_answer": len(answer_ids)}
+
+
+def load_pairs(path):
+    """--data 指向 jsonl 时从文件读，否则用内置的 28 条"""
+    if not path:
+        return SFT_PAIRS
+    pairs = []
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                o = json.loads(line)
+                pairs.append((o["instruction"], o["output"]))
+    return pairs
+
+
+class SFTDataset(Dataset):
+    """每条样本 = 一个 (x, y)，y 里 prompt 部分已经是 -100"""
+
+    def __init__(self, pairs, info, max_len, drop_long=True):
+        self.items = []
+        dropped = 0
+        for q, a in pairs:
+            e = build_example(q, a, info, max_len)
+            if e is None:
+                dropped += 1
+                continue
+            self.items.append(e)
+        if dropped:
+            print(f"⚠ {dropped} 条样本超过 max_len={max_len}，已丢弃")
+
+    def __len__(self):
+        return len(self.items)
+
+    def __getitem__(self, i):
+        e = self.items[i]
+        return torch.tensor(e["x"]), torch.tensor(e["y"])
+
+
+def collate(batch, pad_id):
+    """
+    变长样本 → 定长 batch。用「右填充」。
+
+    ★ 为什么右填充可以不传 padding mask：
+       因果掩码保证位置 t 只能看 0..t。真实 token 都在左边，pad 都在右边，
+        所以任何真实 token 的注意力范围里都不会出现 pad —— 填充是「无害」的。
+        如果反过来做左填充，真实 token 就会看到左边的 pad，分布立刻被打乱。
+        这是 SFT/微调里很实用的一条经验（生成时的 batch 推理更是依赖它）。
+        pad 位置的 label 一律填 -100，本来就不算 loss，所以也不影响梯度。
+    """
+    max_len = max(len(x) for x, _ in batch)
+    xs, ys, attn = [], [], []
+    for x, y in batch:
+        n = len(x)
+        pad = max_len - n
+        xs.append(torch.cat([x, torch.full((pad,), pad_id, dtype=torch.long)]))
+        ys.append(torch.cat([y, torch.full((pad,), IGNORE, dtype=torch.long)]))
+        attn.append([1] * n + [0] * pad)
+    return {"x": torch.stack(xs), "y": torch.stack(ys),
+            "attn": torch.tensor(attn, dtype=torch.long)}
+
+
+# ═══════════════════ 评估 ═══════════════════
+
+@torch.no_grad()
+def evaluate(model, loader, device, info):
+    """
+    只统计「answer 位置」的 loss 和 PPL，口径和训练时完全一致。
+    计算时把 label 里的 -100 过滤掉，因为它会被 cross_entropy 忽略，
+    但我们算 PPL 时要除以「有效的 token 数」而不是总 token 数。
+    """
+    model.eval()
+    total, tokens = 0.0, 0
+    for b in loader:
+        x, y = b["x"].to(device), b["y"].to(device)
+        logits = model(x)
+        total += float(F.cross_entropy(logits.reshape(-1, logits.size(-1)),
+                                       y.reshape(-1), ignore_index=IGNORE,
+                                       reduction="sum"))
+        tokens += int((y != IGNORE).sum())
+    if tokens == 0:
+        return float("inf"), float("inf")
+    loss = total / tokens
+    return loss, math.exp(loss)
+
+
+# ═══════════════════ 训练 ═══════════════════
+
+def train(args):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    torch.manual_seed(args.seed)
+    random.seed(args.seed)
+
+    print(f"device: {device}")
+    model, info = build_model_from_ckpt(args.init, dropout=args.dropout)
+    model = model.to(device)
+    V, max_len = info["V"], info["max_len"]
+    print(f"预训练权重: {args.init}")
+    print(f"词表: {info['n_old_vocab']} → {V}（追加 {', '.join(SPECIALS)}）  "
+          f"max_len={max_len}  参数量 {sum(p.numel() for p in model.parameters())/1e6:.2f}M")
+
+    pairs = load_pairs(args.data)
+    random.shuffle(pairs)
+    n_val = max(1, int(len(pairs) * args.val_ratio)) if args.val_ratio > 0 else 0
+    val_pairs, tr_pairs = pairs[:n_val], pairs[n_val:]
+
+    tr = SFTDataset(tr_pairs, info, max_len)
+    tr_loader = DataLoader(tr, batch_size=args.batch_size, shuffle=True,
+                           collate_fn=lambda b: collate(b, info["pad_id"]))
+    if n_val:
+        va = SFTDataset(val_pairs, info, max_len)
+        va_loader = DataLoader(va, batch_size=args.batch_size, shuffle=False,
+                               collate_fn=lambda b: collate(b, info["pad_id"]))
+    else:
+        va_loader = DataLoader(tr, batch_size=args.batch_size, shuffle=False,
+                               collate_fn=lambda b: collate(b, info["pad_id"]))
+
+    print(f"训练样本 {len(tr)} 条，留出 {len(val_pairs)} 条")
+    # 打印一条样本，让你亲眼看到 -100 是怎么把 prompt 屏蔽掉的
+    e = tr.items[0]
+    print(f"\n样本示例（前 20 个位置）：")
+    print(f"  x     : {list(e['x'][:20])}")
+    print(f"  y     : {list(e['y'][:20])}   ← 前 {e['prompt_len']-1} 个是 -100")
+    print(f"  原文   : {''.join(info['idx2char'][i] for i in e['x'])}")
+
+    # 学习率：SFT 用 1e-5 ~ 5e-5（真实 7B 模型），这里模型小所以放大到 2e-4。
+    # 但一定比预训练的 1e-3 小 —— 预训练是「从零学语言」，SFT 是「在已有能力上挪一点点」，
+    # 学习率大了会把预训练学到的语言能力冲掉，这就是灾难性遗忘。
+    opt = torch.optim.Adam(model.parameters(), lr=args.lr)
+    sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=args.epochs)
+
+    print(f"\n{'Epoch':>6} {'TrainLoss':>10} {'ValPPL(ans)':>12} {'tok/s':>8}")
+    print("-" * 44)
+    best = float("inf")
+    for ep in range(1, args.epochs + 1):
+        model.train()
+        st, seen, tot = time.time(), 0, 0.0
+        for b in tr_loader:
+            x, y = b["x"].to(device), b["y"].to(device)
+            logits = model(x)                       # (B, T, V)
+            # ★★★ 第二处核心：多了 ignore_index=IGNORE ★★★
+            # 没有它，label 里的 -100 会被当成「第 -100 类」，直接报 index out of range。
+            # 有它，prompt 和 padding 位置就被完全排除在 loss 之外。
+            loss = F.cross_entropy(logits.reshape(-1, V), y.reshape(-1),
+                                   ignore_index=IGNORE)
+            opt.zero_grad()
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            opt.step()
+            n = int((y != IGNORE).sum())
+            tot += float(loss.detach()) * n
+            seen += n
+        sched.step()
+        dt = time.time() - st
+        v_loss, v_ppl = evaluate(model, va_loader, device, info)
+        mark = ""
+        if v_ppl < best:
+            best = v_ppl
+            mark = " *"
+            bc = info["base_args"]
+            ck = {"model_state": model.state_dict(), "char2idx": info["char2idx"],
+                  "idx2char": info["idx2char"],
+                  # arch：重建模型结构需要的信息（来自预训练 ckpt 的 args）
+                  "arch": {"d_model": bc["d_model"], "heads": bc["heads"],
+                           "layers": bc["layers"],
+                           "no_pos": bc.get("no_pos", False),
+                           "no_mask": bc.get("no_mask", False)},
+                  "train_args": vars(args),
+                  "specials": {"pad": info["pad_id"], "eos": info["eos_id"],
+                               "unk": info["unk_id"]},
+                  "max_len": max_len, "stage": "sft"}
+            torch.save(ck, args.save)
+        if ep % args.log_every == 0 or ep == 1 or ep == args.epochs:
+            print(f"{ep:>6} {tot/max(seen,1):>10.4f} {v_ppl:>12.2f} "
+                  f"{seen/dt:>8,.0f}{mark}")
+
+    print(f"\n最佳 answer-PPL: {best:.2f}  已保存 {args.save}")
+    print("接下来试：")
+    print(f'    python {os.path.basename(__file__)} --ckpt {args.save} --chat "中国的首都是哪里"')
+
+
+# ═══════════════════ 生成 / 对话 ═══════════════════
+
+@torch.no_grad()
+def answer(model, info, question, device, max_new=40, temperature=0.0):
+    """
+    生成回答：喂 prompt，逐字往外蹦，遇到 <eos> 就停。
+
+    和 transformer_lm.py 的 generate 只有两处不同：
+        1) 输入套上 TEMPLATE（SFT 训练时见过这个格式，模型靠它知道「该答了」）
+        2) 多一个「遇到 <eos> 就 break」的停止条件（预训练模型永远不停，因为它没学过 eos）
+    依然是逐 token 串行 —— 自回归模型的本质没有变。
+    """
+    model.eval()
+    ids = [info["char2idx"].get(ch, info["unk_id"]) for ch in TEMPLATE.format(question)]
+    out = list(ids)
+    for _ in range(max_new):
+        # 位置编码只有 max_len 行，所以只看最近 max_len 个 token
+        idx = torch.tensor([out[-info["max_len"]:]], device=device)
+        logits = model(idx)[0, -1]
+        if temperature <= 0.01:
+            nxt = int(logits.argmax())          # 贪心：结果可复现，方便对比
+        else:
+            nxt = int(torch.multinomial(F.softmax(logits / temperature, dim=-1), 1))
+        if nxt == info["eos_id"]:
+            break                               # ★ 学会停了，这是 SFT 带来的
+        out.append(nxt)
+    return "".join(info["idx2char"][i] for i in out[len(ids):])
+
+
+def load_sft_model(path, device):
+    """从 SFT 的 ckpt 还原模型 + 字表 + 特殊符号（chat / compare 共用）"""
+    ck = torch.load(path, map_location="cpu", weights_only=False)
+    assert ck.get("stage") == "sft", \
+        f"{path} 不是 SFT 模型（没有 <eos>，也没学过对话格式），请先用 train 存一份"
+    a = ck["arch"]
+    info = {"char2idx": ck["char2idx"], "idx2char": ck["idx2char"],
+            "pad_id": ck["specials"]["pad"], "eos_id": ck["specials"]["eos"],
+            "unk_id": ck["specials"]["unk"], "V": len(ck["char2idx"]),
+            "max_len": ck["max_len"]}
+    model = TransformerLM(info["V"], a["d_model"], a["heads"], a["layers"],
+                          info["max_len"], 0.0,
+                          use_pos=not a["no_pos"],
+                          causal=not a["no_mask"]).to(device)
+    model.load_state_dict(ck["model_state"])
+    model.head.weight = model.tok.weight
+    model.eval()
+    return model, info
+
+
+def chat(args):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model, info = load_sft_model(args.ckpt, device)
+
+    qs = [args.chat] if isinstance(args.chat, str) else args.chat
+    for q in qs:
+        print(f"问：{q}")
+        print(f"答：{answer(model, info, q, device, args.max_new, args.temperature)}\n")
+
+
+def compare(args):
+    """同一个问题，预训练基座 vs SFT 之后"""
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    base, info = build_model_from_ckpt(args.init, dropout=0.0)
+    base = base.to(device)
+    base.eval()
+    ft, _ = load_sft_model(args.save, device)
+
+    qs = ["中国的首都是哪里", "你好", "1加1等于几", "太阳从哪边升起"]
+    for q in qs:
+        print(f"问：{q}")
+        # 基座：同样的 prompt，但它没学过 <eos>，只能截断到固定长度
+        print(f"  [SFT前] {answer(base, info, q, device, 40, 0.0)}")
+        print(f"  [SFT后] {answer(ft, info, q, device, 40, 0.0)}")
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--init", default=os.path.join(HERE, "tf_mask.pt"),
+                    help="预训练 checkpoint（SFT 的起点）")
+    ap.add_argument("--data", default="sft_train.jsonl", help="jsonl 指令数据；不给就用内置 28 条")
+    ap.add_argument("--save", default="sft_best.pt")
+    ap.add_argument("--ckpt", default="sft_best.pt", help="--chat 时加载哪个 SFT 模型")
+    ap.add_argument("--epochs", type=int, default=80)
+    # 2e-4：比预训练的 1e-3 小一个量级，防止灾难性遗忘
+    ap.add_argument("--lr", type=float, default=2e-4)
+    ap.add_argument("--batch_size", type=int, default=8)
+    ap.add_argument("--dropout", type=float, default=0.0, help="SFT 数据少，通常调小")
+    ap.add_argument("--val_ratio", type=float, default=0.1, help="留出多少做泛化检验")
+    ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--log_every", type=int, default=10)
+    ap.add_argument("--max_new", type=int, default=40)
+    ap.add_argument("--temperature", type=float, default=0.0, help="0=贪心，可复现")
+    ap.add_argument("--chat", default="", help="用训好的模型回答一个问题")
+    ap.add_argument("--compare", action="store_true", help="对比 SFT 前后的回答")
+    #给定两个数值，计算它们的平均值并显示结果。 第一个数值: 24 第二个数值： 36
+    args = ap.parse_args()
+
+    if args.chat:
+        chat(args)
+    else:
+        train(args)
+        if args.compare:
+            print("\n" + "=" * 50)
+            compare(args)
+
+
+if __name__ == "__main__":
+    main()
