@@ -1,0 +1,8 @@
+﻿method,display_name,n,acc,macro_f1,weighted_f1,ece,nll,train_seconds,infer_ms_per_sample,params_m,checkpoint_mb
+bert_frozen,BERT-base 冻结 [CLS] + LR,300,0.46,0.425564,0.464215,0.346228,2.359457,13.098,34.661,,393
+rule,关键词规则,300,0.2,0.248349,0.261496,,,0.0,0.019,,
+roberta_frozen,RoBERTa-base 冻结 [CLS] + LR,300,0.263333,0.242386,0.261045,0.161361,2.49397,11.999,34.537,,411
+tfidf_svc,TF-IDF + LinearSVC,300,0.173333,0.161625,0.180961,,,0.043,0.041,,
+tfidf_nb,TF-IDF + MultinomialNB,300,0.193333,0.152066,0.177974,0.098756,2.546716,0.064,0.045,,
+roberta_ft,RoBERTa-base 微调,300,0.086667,0.037317,0.048015,0.011667,2.711902,27.656,49.634,102.279,411
+bert_ft,BERT-base 微调,300,0.056667,0.021207,0.022165,0.10723,2.774354,24.071,50.905,102.279,393
