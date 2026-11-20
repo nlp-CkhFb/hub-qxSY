@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "base": "bert-base-chinese",
+    "n_train": 53360,
+    "n_clean_val": 8901,
+    "params_M": 102.3,
+    "epochs": 3,
+    "batch_size": 64,
+    "lr": 2e-05,
+    "head_lr_mult": 5.0,
+    "max_length": 64,
+    "pool": "cls",
+    "seed": 42,
+    "device": "cuda",
+    "model_dir": "C:\\Users\\27622\\Desktop\\新建文件夹\\作业\\pretrain_models\\bert-base-chinese"
+  },
+  "best_epoch": 2,
+  "best_acc": 0.5415,
+  "best_macro_f1": 0.536,
+  "per_class_f1": {
+    "故事": 0.5122,
+    "文化": 0.4723,
+    "娱乐": 0.5814,
+    "体育": 0.6938,
+    "财经": 0.4809,
+    "房产": 0.5718,
+    "汽车": 0.6732,
+    "教育": 0.5607,
+    "科技": 0.4331,
+    "军事": 0.5504,
+    "旅游": 0.4954,
+    "国际": 0.4194,
+    "证券": 0.4342,
+    "农业": 0.5146,
+    "电竞": 0.646
+  },
+  "epochs_log": [
+    {
+      "epoch": 1,
+      "train_loss": 1.4878,
+      "val_acc": 0.5202,
+      "val_macro_f1": 0.5037,
+      "elapsed_s": 82.8
+    },
+    {
+      "epoch": 2,
+      "train_loss": 1.0741,
+      "val_acc": 0.5415,
+      "val_macro_f1": 0.536,
+      "elapsed_s": 80.9
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.9088,
+      "val_acc": 0.5414,
+      "val_macro_f1": 0.535,
+      "elapsed_s": 80.8
+    }
+  ]
+}
