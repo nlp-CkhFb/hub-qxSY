@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "base": "chinese-roberta-wwm-ext",
+    "n_train": 53360,
+    "n_clean_val": 8901,
+    "params_M": 102.3,
+    "epochs": 3,
+    "batch_size": 64,
+    "lr": 2e-05,
+    "head_lr_mult": 5.0,
+    "max_length": 64,
+    "pool": "cls",
+    "seed": 42,
+    "device": "cuda",
+    "model_dir": "C:\\Users\\27622\\Desktop\\新建文件夹\\作业\\pretrain_models\\chinese-roberta-wwm-ext"
+  },
+  "best_epoch": 2,
+  "best_acc": 0.5551,
+  "best_macro_f1": 0.5514,
+  "per_class_f1": {
+    "故事": 0.5168,
+    "文化": 0.4568,
+    "娱乐": 0.5888,
+    "体育": 0.7224,
+    "财经": 0.5045,
+    "房产": 0.5971,
+    "汽车": 0.6724,
+    "教育": 0.5615,
+    "科技": 0.4779,
+    "军事": 0.5534,
+    "旅游": 0.5015,
+    "国际": 0.433,
+    "证券": 0.4823,
+    "农业": 0.549,
+    "电竞": 0.6532
+  },
+  "epochs_log": [
+    {
+      "epoch": 1,
+      "train_loss": 1.4785,
+      "val_acc": 0.5351,
+      "val_macro_f1": 0.5207,
+      "elapsed_s": 85.4
+    },
+    {
+      "epoch": 2,
+      "train_loss": 1.0538,
+      "val_acc": 0.5551,
+      "val_macro_f1": 0.5514,
+      "elapsed_s": 87.0
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.8912,
+      "val_acc": 0.5554,
+      "val_macro_f1": 0.5497,
+      "elapsed_s": 87.3
+    }
+  ]
+}
