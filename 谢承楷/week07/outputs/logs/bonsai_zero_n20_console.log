@@ -1,0 +1,23 @@
+数据：dev_extract.jsonl → 采样 20 条（seed=42，规则见 event_data.canonical_order）
+输出：D:\CK\study\八斗\课程\week7\week7-信息抽取\week7-信息抽取\code\homework\outputs\llm\pred_bonsai_zero_n20.jsonl
+[api] base_url=http://127.0.0.1:8080/v1 model=bonsai max_tokens=256 few_shot=False
+  [ 10/20] 合法 10 条，平均 48.47s/条
+  [ 20/20] 合法 20 条，平均 51.85s/条
+
+统计 → D:\CK\study\八斗\课程\week7\week7-信息抽取\week7-信息抽取\code\homework\outputs\llm\report_bonsai_zero_n20.json（总耗时 1037s）
+
+==============================================================================
+结果：bonsai_zero_n20（api/zero，20 条）
+==============================================================================
+  trigger F1   : 0.6111   (P=0.6875 R=0.5500)
+  argument F1  : 0.4941   (P=0.5185 R=0.4719)
+  event  F1    : 0.0000
+  type_macro_f1: 0.8905
+  JSON 合法率  : 100.0%（结构性修复 0 条，围栏/废话剥离 0 条）
+  解析失败     : 0 条 | 空回复 0 条
+  幻觉论元     : 0 次 | 触发词找不到 0 次
+  平均延迟     : 51.85s/条（p50=57.163s）
+  token        : prompt 17606 + completion 1863 = 19469
+统一评测 → D:\CK\study\八斗\课程\week7\week7-信息抽取\week7-信息抽取\code\homework\outputs\metrics\llm\bonsai_zero_n20.json
+
+下一步：把这条预测和其它方案一起画进对比图（eval/plot_compare.py）

@@ -1,0 +1,63 @@
+{
+  "method": "bonsai_zero_n20",
+  "argv": [
+    "llm_zero_shot\\llm_extract.py",
+    "--backend",
+    "api",
+    "--mode",
+    "zero",
+    "--n",
+    "20",
+    "--max_tokens",
+    "256",
+    "--tag",
+    "bonsai_zero_n20"
+  ],
+  "args": "Namespace(backend='api', mode='zero', n=20, seed=42, data=None, tag='bonsai_zero_n20', out='', model='bonsai', model_path=None, max_tokens=256, max_new_tokens=384, gen_batch=8, dtype='auto', max_length=1280, retries=3, dry_run=False, print_prompt=False, no_eval=False, from_raw='')",
+  "env": {
+    "python": "3.12.16",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "time": "2026-11-26 13:05:31",
+    "torch": "2.14.1+cu126",
+    "cuda_available": true,
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "transformers": "5.22.2"
+  },
+  "runtime_s": 1041.51,
+  "metrics": {
+    "trigger": 0.6111,
+    "argument": 0.4941,
+    "event_exact": 0.0
+  },
+  "type_macro_f1": 0.8905,
+  "report": {
+    "tag": "bonsai_zero_n20",
+    "backend": "api",
+    "mode": "zero",
+    "n": 20,
+    "model": "bonsai",
+    "seed": 42,
+    "few_shot_examples": 0,
+    "json_valid_rate": 100.0,
+    "parse_fail": 0,
+    "empty_reply": 0,
+    "repaired": 0,
+    "noise_stripped": 0,
+    "type_invalid": 0,
+    "role_invalid": 0,
+    "trigger_not_in_source": 0,
+    "arg_not_in_source": 0,
+    "latency_mean_s": 51.85,
+    "latency_p50_s": 57.163,
+    "total_s": 1037.0,
+    "prompt_tokens": 17606,
+    "completion_tokens": 1863,
+    "total_tokens": 19469,
+    "api_errors": 0,
+    "pred_path": "D:\\CK\\study\\八斗\\课程\\week7\\week7-信息抽取\\week7-信息抽取\\code\\homework\\outputs\\llm\\pred_bonsai_zero_n20.jsonl",
+    "gold_subset": "D:\\CK\\study\\八斗\\课程\\week7\\week7-信息抽取\\week7-信息抽取\\code\\homework\\outputs\\llm\\gold_n20.jsonl",
+    "eval_ids": "D:\\CK\\study\\八斗\\课程\\week7\\week7-信息抽取\\week7-信息抽取\\code\\homework\\outputs\\llm\\eval_ids.json",
+    "is_mock": false
+  },
+  "notes": "LLM api/zero 事件抽取"
+}

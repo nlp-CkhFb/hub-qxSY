@@ -1,0 +1,93 @@
+{
+  "method": "bert_pipeline",
+  "argv": [
+    "bert_pipeline\\train.py",
+    "--bert_path",
+    "F:\\huggingface_cache\\models\\roberta",
+    "--cls_batch_size",
+    "16",
+    "--cls_max_len",
+    "128",
+    "--arg_batch_size",
+    "16",
+    "--cls_epochs",
+    "2",
+    "--arg_epochs",
+    "3",
+    "--log_every",
+    "100"
+  ],
+  "args": {
+    "bert_path": "F:\\huggingface_cache\\models\\roberta",
+    "cls_epochs": 2,
+    "detect_limit": 0,
+    "cls_lr": 2e-05,
+    "cls_batch_size": 16,
+    "cls_max_len": 128,
+    "arg_epochs": 3,
+    "arg_lr": 3e-05,
+    "arg_batch_size": 16,
+    "max_len": 256,
+    "arg_layers": 4,
+    "dropout": 0.1,
+    "device": "",
+    "seed": 42,
+    "skip_train": false,
+    "log_every": 100,
+    "only_experts": false,
+    "mock": false,
+    "data_dir": ""
+  },
+  "env": {
+    "python": "3.12.16",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "time": "2026-11-26 00:35:05",
+    "torch": "2.14.1+cu126",
+    "cuda_available": true,
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "transformers": "5.22.2"
+  },
+  "params": null,
+  "log_every": 100,
+  "epochs": [
+    {
+      "epoch": 3,
+      "train_loss": 0.0,
+      "elapsed_s": 208.4,
+      "val": {
+        "中标": 25.2,
+        "亏损": 23.0,
+        "企业收购": 26.0,
+        "企业破产": 6.3,
+        "企业融资": 14.9,
+        "公司上市": 12.7,
+        "股东减持": 19.5,
+        "股东增持": 5.8,
+        "股份回购": 34.4,
+        "被约谈": 2.1,
+        "解除质押": 9.2,
+        "质押": 14.0,
+        "高管变动": 9.8
+      },
+      "stage": "13_argument_experts"
+    }
+  ],
+  "total_elapsed_s": 1571.0,
+  "finished": true,
+  "diag": {
+    "n_detect_dropped": 175,
+    "n_type_wrong": 34,
+    "type_accuracy_on_dev_extract": 0.9634,
+    "n_arg_truncated": 104
+  },
+  "dev_metrics": {
+    "trigger": 0.7375,
+    "argument": 0.3623,
+    "event_exact": 0.0843
+  },
+  "inference_latency_ms": 19.83,
+  "peak_gpu_mb": 2253.7,
+  "pipeline_stages": 3,
+  "num_models": 16,
+  "notes": "两段式：检测器 + 13 分类 + 13 个类型条件论元专家"
+}

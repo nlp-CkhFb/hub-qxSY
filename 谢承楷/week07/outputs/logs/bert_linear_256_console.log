@@ -1,0 +1,38 @@
+  epoch 1 step 50/324 loss=3.4786
+  epoch 1 step 100/324 loss=2.3628
+  epoch 1 step 150/324 loss=1.8504
+  epoch 1 step 200/324 loss=1.5304
+  epoch 1 step 250/324 loss=1.3140
+  epoch 1 step 300/324 loss=1.1585
+epoch 1/3 | train_loss=1.0982 | inner_loss=0.2922 inner_spanF1=0.5483 | dev_spanF1(监控)=0.5721 | 195s
+  ★ 内层验证最优 → 保存 bert_linear_256.pt
+  epoch 2 step 50/324 loss=0.2843
+  epoch 2 step 100/324 loss=0.2780
+  epoch 2 step 150/324 loss=0.2656
+  epoch 2 step 200/324 loss=0.2570
+  epoch 2 step 250/324 loss=0.2516
+  epoch 2 step 300/324 loss=0.2452
+epoch 2/3 | train_loss=0.2433 | inner_loss=0.2072 inner_spanF1=0.6772 | dev_spanF1(监控)=0.6920 | 195s
+  ★ 内层验证最优 → 保存 bert_linear_256.pt
+  epoch 3 step 50/324 loss=0.1850
+  epoch 3 step 100/324 loss=0.1870
+  epoch 3 step 150/324 loss=0.1817
+  epoch 3 step 200/324 loss=0.1815
+  epoch 3 step 250/324 loss=0.1769
+  epoch 3 step 300/324 loss=0.1766
+epoch 3/3 | train_loss=0.1764 | inner_loss=0.1962 inner_spanF1=0.6970 | dev_spanF1(监控)=0.7078 | 196s
+  ★ 内层验证最优 → 保存 bert_linear_256.pt
+加载最优 checkpoint（epoch 3，内层验证 spanF1=0.6970）
+dev 解码：930 句，其中没抽到触发词 12 句
+样本数 930（缺预测 0 条）
+  trigger      P=0.8824 R=0.8710 F1=0.8766 (tp=810 fp=108 fn=120)
+  argument     P=0.5828 R=0.7174 F1=0.6431 (tp=2957 fp=2117 fn=1165)
+  event_exact  P=0.2429 R=0.2398 F1=0.2413 (tp=223 fp=695 fn=707)
+  type_macro_f1 = 0.9231
+  指标已写入 → D:\CK\study\八斗\课程\week7\week7-信息抽取\week7-信息抽取\code\homework\outputs\metrics\disc\bert_linear_256.json
+
+【非法 BIO 统计（dev，模型原始输出）】
+  序列数 930：含非法序列 473 条（50.9%），其中非法开头 2 处、非法转移 1060 处
+  训练集对照：含非法序列 2558 条（49.5%）
+
+训练耗时 587s | 推理延迟 9.23 ms/句 | 峰值显存 1770 MiB
