@@ -37,10 +37,8 @@ python bert/train.py \
 指标文件：`outputs/metrics/disc/hw_rbt3_crf.json`（或 `hw_rbt3_linear.json`）。
 读取：
 
-```python
-import json
-d = json.load(open("outputs/metrics/disc/hw_rbt3_crf.json", encoding="utf-8"))
-print(d["trigger"]["f1"], d["argument"]["f1"], d["event_exact"]["f1"], d["type_macro_f1"])
+```bash
+python -c "import json; d=json.load(open('outputs/metrics/disc/hw_rbt3_crf.json', encoding='utf-8')); print(d['trigger']['f1'], d['argument']['f1'], d['event_exact']['f1'], d['type_macro_f1'])"
 ```
 
 把结果补进 README 的“完整事件”表，然后：
