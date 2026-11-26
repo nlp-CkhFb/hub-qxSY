@@ -1,13 +1,18 @@
-# week07 作业：DuEE-Fin 事件触发词抽取方法对比
+# week07 作业：DuEE-Fin 事件抽取方法对比
 
-- 任务：一句公告 → 事件类型 + 触发词 span；13 类，从 DuEE-Fin 分层抽 1500 / 400 条（seed=42）
-- 范围：本作业只做触发词层，不做论元；论元有 149 个标签，CPU 跑不动，先把「事件检测 / 触发词」这一层比清楚
-- 数据：过滤后 train 1494 / dev 397（只保留触发词在前 192 字内的样本）；指标为触发词 span+类型完全匹配的 P/R/F1，另报类型准确率
-- 方法：
-  1. 规则：训练集触发词词典，最长匹配
-  2. BiLSTM：字符级 27 个 BIO 标签，从零训练 5 epoch
-  3. rbt3 两段式：rbt3 冻结 mean-pooling 特征 + LinearSVC 判类型，再用规则词典定位触发词
-- 结果（同一批 397 条，seed=42）：
+- 任务：一句公告 → 事件类型 + 触发词 + 论元；13 类，从 DuEE-Fin 分层抽 1500 / 400 条（seed=42）
+- 数据：过滤后 train 1494 / dev 397（只保留触发词在前 192 字内的样本）；两种口径都在这 397 条上评测
+- 完整事件层：复用课程 `common/`（`event_data` / `evaluate_events` / `eval_utils`）和 `rule/run_rule.py`，规则 L0
+- 触发词层：`compare.py` 对比规则 / BiLSTM / rbt3 类型+规则定位三种方法
+- 说明：BERT 全事件在 CPU 上 1 epoch 没收敛（inner span F1 = 0），没有把不可信的数字写进表里；完整事件只跑规则 L0
+
+完整事件（397 条，课程 `evaluate_events` 口径）：
+
+| 方法 | Trigger F1 | Argument F1 | Event F1 | Type Macro-F1 |
+|---|---:|---:|---:|---:|
+| 规则 / 词典 + 正则（L0） | 0.6263 | 0.1413 | 0.0076 | 0.7891 |
+
+触发词层（同一批 397 条，span+类型完全匹配）：
 
 | 方法 | Precision | Recall | F1 | Type Acc | 耗时 |
 |---|---:|---:|---:|---:|---:|
@@ -15,6 +20,8 @@
 | BiLSTM（无预训练） | 0.6045 | 0.6045 | 0.6045 | 0.8388 | 89 s |
 | rbt3 类型 + 规则定位 | 0.7280 | 0.7280 | 0.7280 | **0.9194** | 101 s |
 
-- 结论：触发词是封闭词表，规则词典 + 最长匹配很强（F1 0.7758）；rbt3 把类型准确率提到 0.9194，但触发词 span 复用规则，端到端 F1 0.7280 受规则召回限制；BiLSTM 从零训练只有 0.6045，1500 句太少，字符级序列标注没学充分。
-- 运行：`python compare.py`；只跑规则 `python compare.py --methods rule`。首次运行会下载 `hfl/rbt3`（约 150MB）。
-- 文件：`compare.py`、`data/train.jsonl`、`data/dev.jsonl`、`data/event_schema.json`、`results.csv`
+- 结论：完整事件层规则只有 event F1 0.0076，论元/事件级仍是瓶颈；触发词层规则词典最强，rbt3 把类型准确率提到 0.9194，BiLSTM 在 1500 句上欠拟合。
+- 运行：
+  - 完整事件规则：`python rule/run_rule.py --data_dir data/processed --name hw_rule`
+  - 触发词对比：`python compare.py`
+- 文件：`compare.py`、`common/`、`rule/run_rule.py`、`data/processed/`、`outputs/`、`results.csv`
