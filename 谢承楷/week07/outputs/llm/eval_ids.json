@@ -1,0 +1,94 @@
+{
+  "seed": 42,
+  "rule": "sort by (id,sent_id) then random.Random(seed).shuffle, take prefix",
+  "ids": {
+    "n20": [
+      {
+        "id": "0912947ffbd1023c4fa37767397f6cd8",
+        "sent_id": "b3e197348322bccc4549c0ccdcc3de20"
+      },
+      {
+        "id": "7a95cde37086fc108c72230233b79e9f",
+        "sent_id": "a182e6db690f07a72df9d2e8578ea61a"
+      },
+      {
+        "id": "5292facbc33e0203506baa72266975d5",
+        "sent_id": "46fb5c2e44ec533b42952af5771526d6"
+      },
+      {
+        "id": "c183578b565940f96bd1aa18e53ce387",
+        "sent_id": "97987cf4c867e889fa85de45e44108c5"
+      },
+      {
+        "id": "e6152173042a2b526992d41d8de27cb2",
+        "sent_id": "76e9381311a769fca3feecade87ad22b"
+      },
+      {
+        "id": "4a4e58c016e9ff6999d3d48955a06666",
+        "sent_id": "63c43d478a475337d272e5a9f86002e1"
+      },
+      {
+        "id": "3c911ef028774d1589d471b14da346ff",
+        "sent_id": "7025afa8e079e3961289aff4ea98ccdd"
+      },
+      {
+        "id": "2a68463894db47880ea684c6766b64d3",
+        "sent_id": "125915cddba0d152608fa1f69c7b5e73"
+      },
+      {
+        "id": "d82e73bb9ef5fee94cd5defeca157c4f",
+        "sent_id": "a75d92aa78db911f558b8422b773de32"
+      },
+      {
+        "id": "ae14f65f7fafb7095e8b4fcb503bf943",
+        "sent_id": "52e69d130bdc7d92efd65273d43d0153"
+      },
+      {
+        "id": "9ed804f7cf41b8011adf912b9caf9f0c",
+        "sent_id": "767eb6f4f7061384d5bcd1e921fa8c76"
+      },
+      {
+        "id": "e3a981a94004ebe78932cdf78dfd7d91",
+        "sent_id": "10b61d26043386547f573e0e8b7ad680"
+      },
+      {
+        "id": "9880eaf820a83a3286371de81afbfd33",
+        "sent_id": "038c0a8c41e21321fba9128d6fc8b2e7"
+      },
+      {
+        "id": "f1cb7078b587eb7d3a66108e304abd36",
+        "sent_id": "39ab189259ec3d51f0a2ead3d27944a0"
+      },
+      {
+        "id": "abab9ebda2fa700c3666e9193f1048bb",
+        "sent_id": "95fff7b4ece5fd9b2cf7862976b54950"
+      },
+      {
+        "id": "84b91679c167e33c1ff5bfee1260dc2a",
+        "sent_id": "995b528e6bdc45a209a8b3e444bf11e7"
+      },
+      {
+        "id": "5ed2695f9f115164eb8181da2f2bde80",
+        "sent_id": "d0c8e83a1e4dae19f2ab58d6c600f45d"
+      },
+      {
+        "id": "0faea569d531196adc82ec7f4e76a1a7",
+        "sent_id": "dfa654661750eb99b9d661485578bcd3"
+      },
+      {
+        "id": "cc412c149c1b3151494a81d3f974fe26",
+        "sent_id": "0f740ca067a3432d5064aa3947358108"
+      },
+      {
+        "id": "737ae8e83947f8f9f548cfc511cd198f",
+        "sent_id": "0f0f1b9a2e665c959bf7e42bf8eef389"
+      }
+    ],
+    "n1": [
+      {
+        "id": "0912947ffbd1023c4fa37767397f6cd8",
+        "sent_id": "b3e197348322bccc4549c0ccdcc3de20"
+      }
+    ]
+  }
+}
