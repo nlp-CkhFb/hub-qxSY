@@ -1,0 +1,136 @@
+{
+  "args": {
+    "backbone": "roberta-base-chinese",
+    "decoder": "linear",
+    "layers": 0,
+    "max_len": 256,
+    "epochs": 3,
+    "batch_size": 8,
+    "grad_accum": 4,
+    "lr": 2e-05,
+    "head_lr_mult": 5.0,
+    "weight_decay": 0.01,
+    "dropout": 0.1,
+    "warmup_ratio": 0.1,
+    "max_grad_norm": 1.0,
+    "inner_val": 0.1,
+    "seed": 42,
+    "run_name": "roberta_linear_scale2_3ep",
+    "data_dir": "",
+    "device": "auto",
+    "amp": false,
+    "log_every": 20,
+    "num_workers": 0,
+    "limit": 0,
+    "hard_constraint": false
+  },
+  "backbone": {
+    "display": "RoBERTa-base-chinese",
+    "family": "roberta",
+    "path": "C:\\Users\\hbz\\Desktop\\work_by_git\\hub-qxSY\\黄博志\\week06\\nlp_roberta_backbone_base_std",
+    "params_m": 102.4,
+    "note": "ModelScope damo/nlp_roberta_backbone_base_std，RoBERTa 预训练目标，week06 已用于 TNEWS 分类对比",
+    "key": "roberta-base-chinese"
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1.51947,
+      "inner_val": {
+        "precision": 0.21589,
+        "recall": 0.2095,
+        "f1": 0.21265,
+        "tp": 644,
+        "fp": 2339,
+        "fn": 2430
+      },
+      "epoch_s": 548.6
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.55116,
+      "inner_val": {
+        "precision": 0.3728,
+        "recall": 0.46812,
+        "f1": 0.41506,
+        "tp": 1439,
+        "fp": 2421,
+        "fn": 1635
+      },
+      "epoch_s": 453.6
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.3862,
+      "inner_val": {
+        "precision": 0.42985,
+        "recall": 0.56213,
+        "f1": 0.48717,
+        "tp": 1728,
+        "fp": 2292,
+        "fn": 1346
+      },
+      "epoch_s": 455.8
+    }
+  ],
+  "meta": {
+    "display_name": "RoBERTa-base-chinese + LINEAR",
+    "backbone": "roberta-base-chinese",
+    "backbone_display": "RoBERTa-base-chinese",
+    "backbone_path": "C:\\Users\\hbz\\Desktop\\work_by_git\\hub-qxSY\\黄博志\\week06\\nlp_roberta_backbone_base_std",
+    "decoder": "linear",
+    "num_layers": 12,
+    "max_len": 256,
+    "epochs": 3,
+    "batch_size": 8,
+    "grad_accum": 4,
+    "effective_batch": 32,
+    "lr": 2e-05,
+    "head_lr_mult": 5.0,
+    "weight_decay": 0.01,
+    "warmup_ratio": 0.1,
+    "amp": false,
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce GTX 1650 Ti",
+    "seed": 42,
+    "params_m": 102.4,
+    "train_s": 1459.6,
+    "ms_per_sentence": 61.42,
+    "sentences_per_s": 16.3,
+    "peak_gpu_mb": 2872.4,
+    "infer_peak_gpu_mb": 1645.6,
+    "best_epoch": 3,
+    "inner_val_span_f1": 0.48717,
+    "n_truncated": 122,
+    "n_truncated_rate": 0.1312,
+    "illegal_seq_rate": 0.8806,
+    "illegal_dev": {
+      "illegal_start": 4,
+      "illegal_transition": 2739,
+      "total_seqs": 930,
+      "illegal_seqs": 819,
+      "total_illegal": 2743,
+      "illegal_seq_rate": 0.8806,
+      "illegal_per_seq": 2.949
+    },
+    "illegal_token": {
+      "illegal_start": 155,
+      "illegal_transition": 2742,
+      "total_seqs": 930,
+      "illegal_seqs": 845,
+      "total_illegal": 2897,
+      "illegal_seq_rate": 0.9086,
+      "illegal_per_seq": 3.115
+    },
+    "illegal_char": {
+      "illegal_start": 4,
+      "illegal_transition": 2739,
+      "total_seqs": 930,
+      "illegal_seqs": 819,
+      "total_illegal": 2743,
+      "illegal_seq_rate": 0.8806,
+      "illegal_per_seq": 2.949
+    },
+    "hard_constraint_train": false
+  }
+}

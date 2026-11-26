@@ -1,0 +1,121 @@
+C:\Users\hbz\anaconda3\envs\py312\python.exe src/train.py --backbone bert-base-chinese --decoder linear --run_name bert_linear_256
+
+[run] bert_linear_256 | BERT-base-chinese | decoder=linear | device=cuda | amp=False
+[data] C:\Users\hbz\Desktop\work_by_git\hub-qxSY\黄博志\week07\data\processed
+[data] train=5172 inner_val=575 dev=930
+[tok] BertTokenizer vocab=21128
+[model] params=102.4M | layers=12 | token_type_ids=True
+  e1 step 20/647 loss=5.0746 lr=2.08e-06 gnorm=16.18 13.3s
+  e1 step 40/647 loss=4.9521 lr=4.17e-06 gnorm=16.32 26.4s
+  e1 step 60/647 loss=4.7402 lr=6.25e-06 gnorm=16.60 39.5s
+  e1 step 80/647 loss=4.4291 lr=8.33e-06 gnorm=16.42 52.7s
+  e1 step 100/647 loss=4.0004 lr=1.04e-05 gnorm=7.82 65.4s
+  e1 step 120/647 loss=3.6093 lr=1.25e-05 gnorm=1.92 78.2s
+  e1 step 140/647 loss=3.2960 lr=1.46e-05 gnorm=2.33 91.0s
+  e1 step 160/647 loss=3.0550 lr=1.67e-05 gnorm=1.18 104.0s
+  e1 step 180/647 loss=2.8605 lr=1.87e-05 gnorm=1.38 116.9s
+  e1 step 200/647 loss=2.7063 lr=1.99e-05 gnorm=1.77 129.9s
+  e1 step 220/647 loss=2.5583 lr=1.97e-05 gnorm=1.36 143.0s
+  e1 step 240/647 loss=2.4356 lr=1.94e-05 gnorm=2.17 155.9s
+  e1 step 260/647 loss=2.3309 lr=1.92e-05 gnorm=1.36 168.7s
+  e1 step 280/647 loss=2.2327 lr=1.90e-05 gnorm=1.88 181.9s
+  e1 step 300/647 loss=2.1435 lr=1.88e-05 gnorm=2.51 195.2s
+  e1 step 320/647 loss=2.0667 lr=1.85e-05 gnorm=2.47 208.3s
+  e1 step 340/647 loss=1.9920 lr=1.83e-05 gnorm=1.96 221.5s
+  e1 step 360/647 loss=1.9237 lr=1.81e-05 gnorm=1.54 234.5s
+  e1 step 380/647 loss=1.8620 lr=1.79e-05 gnorm=1.94 247.1s
+  e1 step 400/647 loss=1.8038 lr=1.76e-05 gnorm=2.03 260.5s
+  e1 step 420/647 loss=1.7490 lr=1.74e-05 gnorm=2.10 273.5s
+  e1 step 440/647 loss=1.6985 lr=1.72e-05 gnorm=1.96 286.0s
+  e1 step 460/647 loss=1.6514 lr=1.69e-05 gnorm=2.19 298.6s
+  e1 step 480/647 loss=1.6074 lr=1.67e-05 gnorm=2.83 311.2s
+  e1 step 500/647 loss=1.5658 lr=1.65e-05 gnorm=2.66 324.2s
+  e1 step 520/647 loss=1.5241 lr=1.63e-05 gnorm=1.58 337.6s
+  e1 step 540/647 loss=1.4878 lr=1.60e-05 gnorm=2.53 350.5s
+  e1 step 560/647 loss=1.4527 lr=1.58e-05 gnorm=2.05 363.4s
+  e1 step 580/647 loss=1.4202 lr=1.56e-05 gnorm=2.58 376.6s
+  e1 step 600/647 loss=1.3884 lr=1.53e-05 gnorm=3.38 389.7s
+  e1 step 620/647 loss=1.3581 lr=1.51e-05 gnorm=2.43 402.6s
+  e1 step 640/647 loss=1.3295 lr=1.49e-05 gnorm=1.61 415.8s
+  e1 step 647/647 loss=1.3209 lr=1.48e-05 gnorm=1.85 419.8s
+[epoch 1] loss=1.3209 inner_val spanF1=0.4328 P=0.3843 R=0.4951 (7.6 min)
+  [ckpt] saved bert_linear_256.pt (inner_val F1=0.4328)
+  e2 step 20/647 loss=0.3995 lr=1.46e-05 gnorm=1.39 12.7s
+  e2 step 40/647 loss=0.4010 lr=1.43e-05 gnorm=2.06 25.9s
+  e2 step 60/647 loss=0.3980 lr=1.41e-05 gnorm=1.42 39.0s
+  e2 step 80/647 loss=0.4029 lr=1.39e-05 gnorm=1.90 52.0s
+  e2 step 100/647 loss=0.3932 lr=1.36e-05 gnorm=1.92 65.0s
+  e2 step 120/647 loss=0.3917 lr=1.34e-05 gnorm=1.66 78.0s
+  e2 step 140/647 loss=0.3857 lr=1.32e-05 gnorm=1.75 91.0s
+  e2 step 160/647 loss=0.3841 lr=1.30e-05 gnorm=1.42 103.8s
+  e2 step 180/647 loss=0.3821 lr=1.27e-05 gnorm=1.32 116.8s
+  e2 step 200/647 loss=0.3776 lr=1.25e-05 gnorm=2.02 129.6s
+  e2 step 220/647 loss=0.3738 lr=1.23e-05 gnorm=1.51 142.9s
+  e2 step 240/647 loss=0.3718 lr=1.20e-05 gnorm=2.47 155.4s
+  e2 step 260/647 loss=0.3695 lr=1.18e-05 gnorm=1.63 168.3s
+  e2 step 280/647 loss=0.3677 lr=1.16e-05 gnorm=1.96 180.7s
+  e2 step 300/647 loss=0.3654 lr=1.14e-05 gnorm=1.67 193.7s
+  e2 step 320/647 loss=0.3638 lr=1.11e-05 gnorm=2.56 206.5s
+  e2 step 340/647 loss=0.3632 lr=1.09e-05 gnorm=1.61 218.9s
+  e2 step 360/647 loss=0.3595 lr=1.07e-05 gnorm=1.63 232.2s
+  e2 step 380/647 loss=0.3567 lr=1.05e-05 gnorm=1.64 245.2s
+  e2 step 400/647 loss=0.3544 lr=1.02e-05 gnorm=1.43 258.3s
+  e2 step 420/647 loss=0.3520 lr=1.00e-05 gnorm=2.25 271.5s
+  e2 step 440/647 loss=0.3492 lr=9.77e-06 gnorm=1.73 284.5s
+  e2 step 460/647 loss=0.3468 lr=9.54e-06 gnorm=2.25 297.7s
+  e2 step 480/647 loss=0.3446 lr=9.32e-06 gnorm=1.65 310.6s
+  e2 step 500/647 loss=0.3430 lr=9.09e-06 gnorm=1.79 323.3s
+  e2 step 520/647 loss=0.3415 lr=8.86e-06 gnorm=1.49 336.4s
+  e2 step 540/647 loss=0.3403 lr=8.63e-06 gnorm=1.42 349.8s
+  e2 step 560/647 loss=0.3382 lr=8.40e-06 gnorm=2.00 363.2s
+  e2 step 580/647 loss=0.3375 lr=8.17e-06 gnorm=2.40 376.0s
+  e2 step 600/647 loss=0.3364 lr=7.95e-06 gnorm=2.01 388.8s
+  e2 step 620/647 loss=0.3351 lr=7.72e-06 gnorm=1.42 401.8s
+  e2 step 640/647 loss=0.3332 lr=7.49e-06 gnorm=1.66 414.9s
+  e2 step 647/647 loss=0.3322 lr=7.40e-06 gnorm=1.19 419.2s
+[epoch 2] loss=0.3322 inner_val spanF1=0.5928 P=0.5331 R=0.6675 (7.6 min)
+  [ckpt] saved bert_linear_256.pt (inner_val F1=0.5928)
+  e3 step 20/647 loss=0.2475 lr=7.17e-06 gnorm=1.18 13.1s
+  e3 step 40/647 loss=0.2599 lr=6.94e-06 gnorm=1.45 26.5s
+  e3 step 60/647 loss=0.2606 lr=6.71e-06 gnorm=1.67 39.4s
+  e3 step 80/647 loss=0.2489 lr=6.48e-06 gnorm=1.69 52.4s
+  e3 step 100/647 loss=0.2450 lr=6.26e-06 gnorm=1.71 64.6s
+  e3 step 120/647 loss=0.2469 lr=6.03e-06 gnorm=1.94 77.4s
+  e3 step 140/647 loss=0.2445 lr=5.80e-06 gnorm=1.34 90.6s
+  e3 step 160/647 loss=0.2470 lr=5.57e-06 gnorm=1.93 103.9s
+  e3 step 180/647 loss=0.2479 lr=5.34e-06 gnorm=1.52 117.1s
+  e3 step 200/647 loss=0.2456 lr=5.11e-06 gnorm=1.45 129.9s
+  e3 step 220/647 loss=0.2482 lr=4.89e-06 gnorm=1.81 143.0s
+  e3 step 240/647 loss=0.2496 lr=4.66e-06 gnorm=1.79 155.9s
+  e3 step 260/647 loss=0.2485 lr=4.43e-06 gnorm=1.79 168.8s
+  e3 step 280/647 loss=0.2477 lr=4.20e-06 gnorm=1.64 182.2s
+  e3 step 300/647 loss=0.2484 lr=3.97e-06 gnorm=1.39 195.4s
+  e3 step 320/647 loss=0.2470 lr=3.74e-06 gnorm=1.81 208.2s
+  e3 step 340/647 loss=0.2467 lr=3.52e-06 gnorm=1.43 220.5s
+  e3 step 360/647 loss=0.2460 lr=3.29e-06 gnorm=1.85 233.7s
+  e3 step 380/647 loss=0.2452 lr=3.06e-06 gnorm=2.03 246.8s
+  e3 step 400/647 loss=0.2443 lr=2.83e-06 gnorm=1.59 259.8s
+  e3 step 420/647 loss=0.2441 lr=2.60e-06 gnorm=1.50 273.1s
+  e3 step 440/647 loss=0.2436 lr=2.37e-06 gnorm=1.42 286.2s
+  e3 step 460/647 loss=0.2435 lr=2.15e-06 gnorm=1.70 299.2s
+  e3 step 480/647 loss=0.2431 lr=1.92e-06 gnorm=1.41 312.3s
+  e3 step 500/647 loss=0.2417 lr=1.69e-06 gnorm=1.61 325.3s
+  e3 step 520/647 loss=0.2409 lr=1.46e-06 gnorm=1.56 338.6s
+  e3 step 540/647 loss=0.2404 lr=1.23e-06 gnorm=1.60 351.6s
+  e3 step 560/647 loss=0.2397 lr=1.00e-06 gnorm=1.51 364.7s
+  e3 step 580/647 loss=0.2402 lr=7.80e-07 gnorm=1.40 377.9s
+  e3 step 600/647 loss=0.2401 lr=5.50e-07 gnorm=1.55 391.1s
+  e3 step 620/647 loss=0.2395 lr=3.20e-07 gnorm=1.81 404.1s
+  e3 step 640/647 loss=0.2389 lr=9.00e-08 gnorm=1.76 417.3s
+  e3 step 647/647 loss=0.2391 lr=0.00e+00 gnorm=1.40 421.6s
+[epoch 3] loss=0.2391 inner_val spanF1=0.6199 P=0.5491 R=0.7118 (7.6 min)
+  [ckpt] saved bert_linear_256.pt (inner_val F1=0.6199)
+[dev] evaluating 930 sentences ...
+样本数 930（缺预测 0 条）
+  trigger      P=0.8427 R=0.8065 F1=0.8242 (tp=750 fp=140 fn=180)
+  argument     P=0.5319 R=0.6487 F1=0.5845 (tp=2674 fp=2353 fn=1448)
+  event_exact  P=0.1910 R=0.1828 F1=0.1868 (tp=170 fp=720 fn=760)
+  type_macro_f1 = 0.8224
+  n200 子集：trigger F1=0.8184 arg F1=0.5917 → bert_linear_256_n200.json
+  指标已写入 → C:\Users\hbz\Desktop\work_by_git\hub-qxSY\黄博志\week07\outputs\metrics\disc\bert_linear_256.json
+[dev] trigger F1=0.8242 arg F1=0.5845 event F1=0.1868 | token illegal=0.6430 | 61.1 ms/句

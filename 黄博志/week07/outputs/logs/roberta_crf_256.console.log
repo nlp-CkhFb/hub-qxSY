@@ -1,0 +1,121 @@
+C:\Users\hbz\anaconda3\envs\py312\python.exe src/train.py --backbone roberta-base-chinese --decoder crf --run_name roberta_crf_256
+
+[run] roberta_crf_256 | RoBERTa-base-chinese | decoder=crf | device=cuda | amp=False
+[data] C:\Users\hbz\Desktop\work_by_git\hub-qxSY\黄博志\week07\data\processed
+[data] train=5172 inner_val=575 dev=930
+[tok] BertTokenizer vocab=21128
+[model] params=102.4M | layers=12 | token_type_ids=True
+  e1 step 20/647 loss=693.6493 lr=2.08e-06 gnorm=1114.61 20.4s
+  e1 step 40/647 loss=713.6025 lr=4.17e-06 gnorm=1256.38 40.1s
+  e1 step 60/647 loss=712.1260 lr=6.25e-06 gnorm=1257.18 59.4s
+  e1 step 80/647 loss=683.2493 lr=8.33e-06 gnorm=1389.97 77.6s
+  e1 step 100/647 loss=656.2930 lr=1.04e-05 gnorm=1465.62 95.8s
+  e1 step 120/647 loss=621.4074 lr=1.25e-05 gnorm=1119.99 113.8s
+  e1 step 140/647 loss=586.5332 lr=1.46e-05 gnorm=885.80 132.7s
+  e1 step 160/647 loss=552.8460 lr=1.67e-05 gnorm=591.95 151.7s
+  e1 step 180/647 loss=523.6189 lr=1.87e-05 gnorm=399.62 170.3s
+  e1 step 200/647 loss=496.2928 lr=1.99e-05 gnorm=303.13 188.8s
+  e1 step 220/647 loss=473.9834 lr=1.97e-05 gnorm=162.88 207.9s
+  e1 step 240/647 loss=452.9418 lr=1.94e-05 gnorm=120.72 226.3s
+  e1 step 260/647 loss=435.9881 lr=1.92e-05 gnorm=72.62 245.3s
+  e1 step 280/647 loss=420.4927 lr=1.90e-05 gnorm=92.54 263.8s
+  e1 step 300/647 loss=406.7004 lr=1.88e-05 gnorm=97.21 282.2s
+  e1 step 320/647 loss=393.9878 lr=1.85e-05 gnorm=85.69 300.3s
+  e1 step 340/647 loss=383.9719 lr=1.83e-05 gnorm=165.17 318.4s
+  e1 step 360/647 loss=373.8218 lr=1.81e-05 gnorm=71.84 336.8s
+  e1 step 380/647 loss=365.1327 lr=1.79e-05 gnorm=104.38 355.1s
+  e1 step 400/647 loss=357.6265 lr=1.76e-05 gnorm=217.71 373.1s
+  e1 step 420/647 loss=349.8463 lr=1.74e-05 gnorm=298.12 391.8s
+  e1 step 440/647 loss=343.1228 lr=1.72e-05 gnorm=219.62 410.7s
+  e1 step 460/647 loss=336.5829 lr=1.69e-05 gnorm=120.46 429.5s
+  e1 step 480/647 loss=330.7744 lr=1.67e-05 gnorm=292.10 448.8s
+  e1 step 500/647 loss=324.9939 lr=1.65e-05 gnorm=205.26 467.4s
+  e1 step 520/647 loss=319.6526 lr=1.63e-05 gnorm=151.24 486.1s
+  e1 step 540/647 loss=314.9203 lr=1.60e-05 gnorm=128.03 504.7s
+  e1 step 560/647 loss=309.7268 lr=1.58e-05 gnorm=126.79 522.8s
+  e1 step 580/647 loss=305.2402 lr=1.56e-05 gnorm=216.78 541.6s
+  e1 step 600/647 loss=300.4647 lr=1.53e-05 gnorm=170.81 559.2s
+  e1 step 620/647 loss=296.2957 lr=1.51e-05 gnorm=137.67 578.3s
+  e1 step 640/647 loss=292.1414 lr=1.49e-05 gnorm=122.30 597.4s
+  e1 step 647/647 loss=290.7269 lr=1.48e-05 gnorm=152.18 603.5s
+[epoch 1] loss=290.7269 inner_val spanF1=0.0558 P=0.2401 R=0.0316 (10.8 min)
+  [ckpt] saved roberta_crf_256.pt (inner_val F1=0.0558)
+  e2 step 20/647 loss=169.4230 lr=1.46e-05 gnorm=194.67 18.6s
+  e2 step 40/647 loss=157.4121 lr=1.43e-05 gnorm=129.96 37.3s
+  e2 step 60/647 loss=157.5366 lr=1.41e-05 gnorm=229.56 57.2s
+  e2 step 80/647 loss=156.7458 lr=1.39e-05 gnorm=182.45 75.8s
+  e2 step 100/647 loss=153.7088 lr=1.36e-05 gnorm=166.59 94.0s
+  e2 step 120/647 loss=152.2928 lr=1.34e-05 gnorm=126.48 112.7s
+  e2 step 140/647 loss=152.0520 lr=1.32e-05 gnorm=193.32 130.8s
+  e2 step 160/647 loss=152.8230 lr=1.30e-05 gnorm=168.12 149.8s
+  e2 step 180/647 loss=151.9450 lr=1.27e-05 gnorm=151.37 168.6s
+  e2 step 200/647 loss=150.9827 lr=1.25e-05 gnorm=169.37 187.5s
+  e2 step 220/647 loss=149.9246 lr=1.23e-05 gnorm=171.97 206.6s
+  e2 step 240/647 loss=148.9907 lr=1.20e-05 gnorm=151.33 225.2s
+  e2 step 260/647 loss=148.5980 lr=1.18e-05 gnorm=151.08 244.3s
+  e2 step 280/647 loss=148.3009 lr=1.16e-05 gnorm=146.51 263.1s
+  e2 step 300/647 loss=148.1436 lr=1.14e-05 gnorm=205.42 282.0s
+  e2 step 320/647 loss=147.4845 lr=1.11e-05 gnorm=210.48 301.1s
+  e2 step 340/647 loss=146.2524 lr=1.09e-05 gnorm=190.67 319.6s
+  e2 step 360/647 loss=145.6158 lr=1.07e-05 gnorm=166.48 338.0s
+  e2 step 380/647 loss=145.7060 lr=1.05e-05 gnorm=175.19 356.8s
+  e2 step 400/647 loss=145.2117 lr=1.02e-05 gnorm=194.42 375.1s
+  e2 step 420/647 loss=144.3459 lr=1.00e-05 gnorm=226.37 393.4s
+  e2 step 440/647 loss=143.6506 lr=9.77e-06 gnorm=160.61 411.1s
+  e2 step 460/647 loss=142.9241 lr=9.54e-06 gnorm=196.04 429.9s
+  e2 step 480/647 loss=142.2404 lr=9.32e-06 gnorm=197.93 448.2s
+  e2 step 500/647 loss=141.3957 lr=9.09e-06 gnorm=236.16 466.7s
+  e2 step 520/647 loss=140.7427 lr=8.86e-06 gnorm=250.62 485.5s
+  e2 step 540/647 loss=140.1438 lr=8.63e-06 gnorm=354.90 504.1s
+  e2 step 560/647 loss=139.7661 lr=8.40e-06 gnorm=265.93 522.6s
+  e2 step 580/647 loss=139.1787 lr=8.17e-06 gnorm=217.86 541.1s
+  e2 step 600/647 loss=138.8536 lr=7.95e-06 gnorm=294.21 560.1s
+  e2 step 620/647 loss=138.3617 lr=7.72e-06 gnorm=278.95 578.0s
+  e2 step 640/647 loss=137.8466 lr=7.49e-06 gnorm=302.50 596.7s
+  e2 step 647/647 loss=137.6977 lr=7.40e-06 gnorm=200.52 602.4s
+[epoch 2] loss=137.6977 inner_val spanF1=0.2487 P=0.2914 R=0.2170 (10.8 min)
+  [ckpt] saved roberta_crf_256.pt (inner_val F1=0.2487)
+  e3 step 20/647 loss=115.1714 lr=7.17e-06 gnorm=169.26 18.5s
+  e3 step 40/647 loss=118.4371 lr=6.94e-06 gnorm=289.06 37.3s
+  e3 step 60/647 loss=116.0918 lr=6.71e-06 gnorm=309.59 55.0s
+  e3 step 80/647 loss=116.2746 lr=6.48e-06 gnorm=311.87 73.2s
+  e3 step 100/647 loss=115.8648 lr=6.26e-06 gnorm=211.62 90.8s
+  e3 step 120/647 loss=115.3058 lr=6.03e-06 gnorm=201.24 108.9s
+  e3 step 140/647 loss=115.3705 lr=5.80e-06 gnorm=186.06 127.8s
+  e3 step 160/647 loss=115.3218 lr=5.57e-06 gnorm=235.91 145.9s
+  e3 step 180/647 loss=115.6316 lr=5.34e-06 gnorm=163.46 163.8s
+  e3 step 200/647 loss=115.7982 lr=5.11e-06 gnorm=198.63 181.8s
+  e3 step 220/647 loss=115.0988 lr=4.89e-06 gnorm=173.23 200.5s
+  e3 step 240/647 loss=114.3580 lr=4.66e-06 gnorm=168.51 218.3s
+  e3 step 260/647 loss=114.0293 lr=4.43e-06 gnorm=239.39 237.1s
+  e3 step 280/647 loss=114.2967 lr=4.20e-06 gnorm=157.45 255.4s
+  e3 step 300/647 loss=114.0364 lr=3.97e-06 gnorm=181.20 274.0s
+  e3 step 320/647 loss=113.8298 lr=3.74e-06 gnorm=184.63 292.9s
+  e3 step 340/647 loss=113.3680 lr=3.52e-06 gnorm=182.60 312.0s
+  e3 step 360/647 loss=112.7107 lr=3.29e-06 gnorm=201.80 330.4s
+  e3 step 380/647 loss=112.2070 lr=3.06e-06 gnorm=212.07 349.6s
+  e3 step 400/647 loss=112.3643 lr=2.83e-06 gnorm=238.41 368.3s
+  e3 step 420/647 loss=112.0455 lr=2.60e-06 gnorm=199.88 387.2s
+  e3 step 440/647 loss=112.0422 lr=2.37e-06 gnorm=380.08 405.4s
+  e3 step 460/647 loss=111.5406 lr=2.15e-06 gnorm=173.64 424.2s
+  e3 step 480/647 loss=111.2285 lr=1.92e-06 gnorm=269.16 442.8s
+  e3 step 500/647 loss=110.9813 lr=1.69e-06 gnorm=172.40 461.5s
+  e3 step 520/647 loss=111.1644 lr=1.46e-06 gnorm=233.82 480.3s
+  e3 step 540/647 loss=111.0907 lr=1.23e-06 gnorm=208.73 499.4s
+  e3 step 560/647 loss=110.8277 lr=1.00e-06 gnorm=195.68 517.3s
+  e3 step 580/647 loss=110.8229 lr=7.80e-07 gnorm=190.77 535.9s
+  e3 step 600/647 loss=110.6865 lr=5.50e-07 gnorm=158.91 554.1s
+  e3 step 620/647 loss=110.4751 lr=3.20e-07 gnorm=167.09 572.6s
+  e3 step 640/647 loss=110.3634 lr=9.00e-08 gnorm=219.53 591.9s
+  e3 step 647/647 loss=110.3931 lr=0.00e+00 gnorm=166.74 598.0s
+[epoch 3] loss=110.3931 inner_val spanF1=0.2729 P=0.2717 R=0.2742 (10.7 min)
+  [ckpt] saved roberta_crf_256.pt (inner_val F1=0.2729)
+[dev] evaluating 930 sentences ...
+样本数 930（缺预测 0 条）
+  trigger      P=0.5269 R=0.4312 F1=0.4743 (tp=401 fp=360 fn=529)
+  argument     P=0.2189 R=0.1970 F1=0.2074 (tp=812 fp=2898 fn=3310)
+  event_exact  P=0.0026 R=0.0022 F1=0.0024 (tp=2 fp=759 fn=928)
+  type_macro_f1 = 0.2639
+  n200 子集：trigger F1=0.4603 arg F1=0.1939 → roberta_crf_256_n200.json
+  指标已写入 → C:\Users\hbz\Desktop\work_by_git\hub-qxSY\黄博志\week07\outputs\metrics\disc\roberta_crf_256.json
+[dev] trigger F1=0.4743 arg F1=0.2074 event F1=0.0024 | token illegal=0.9527 | 81.8 ms/句

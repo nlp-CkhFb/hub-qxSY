@@ -1,0 +1,8 @@
+# 本机实测环境（Windows + GTX 1650 Ti 4GB）
+# torch 需装 CUDA 版；直接 pip install torch==2.6.0 可能拿到 +cpu 轮子。
+torch==2.6.0
+transformers==5.19.0
+numpy
+scipy
+matplotlib
+tqdm

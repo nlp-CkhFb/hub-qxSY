@@ -1,0 +1,136 @@
+{
+  "args": {
+    "backbone": "bert-base-chinese",
+    "decoder": "linear",
+    "layers": 0,
+    "max_len": 256,
+    "epochs": 3,
+    "batch_size": 8,
+    "grad_accum": 4,
+    "lr": 2e-05,
+    "head_lr_mult": 5.0,
+    "weight_decay": 0.01,
+    "dropout": 0.1,
+    "warmup_ratio": 0.1,
+    "max_grad_norm": 1.0,
+    "inner_val": 0.1,
+    "seed": 42,
+    "run_name": "bert_linear_256",
+    "data_dir": "",
+    "device": "auto",
+    "amp": false,
+    "log_every": 20,
+    "num_workers": 0,
+    "limit": 0,
+    "hard_constraint": false
+  },
+  "backbone": {
+    "display": "BERT-base-chinese",
+    "family": "bert",
+    "path": "D:\\八斗\\week4\\第四周 语言模型\\bert-base-chinese",
+    "params_m": 102.4,
+    "note": "Google 中文 BERT-base，MLM 预训练，week4 课程材料自带",
+    "key": "bert-base-chinese"
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1.32088,
+      "inner_val": {
+        "precision": 0.38434,
+        "recall": 0.49512,
+        "f1": 0.43276,
+        "tp": 1522,
+        "fp": 2438,
+        "fn": 1552
+      },
+      "epoch_s": 454.0
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.33225,
+      "inner_val": {
+        "precision": 0.53313,
+        "recall": 0.66753,
+        "f1": 0.59281,
+        "tp": 2052,
+        "fp": 1797,
+        "fn": 1022
+      },
+      "epoch_s": 453.4
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.23912,
+      "inner_val": {
+        "precision": 0.54906,
+        "recall": 0.71178,
+        "f1": 0.61992,
+        "tp": 2188,
+        "fp": 1797,
+        "fn": 886
+      },
+      "epoch_s": 455.8
+    }
+  ],
+  "meta": {
+    "display_name": "BERT-base-chinese + LINEAR",
+    "backbone": "bert-base-chinese",
+    "backbone_display": "BERT-base-chinese",
+    "backbone_path": "D:\\八斗\\week4\\第四周 语言模型\\bert-base-chinese",
+    "decoder": "linear",
+    "num_layers": 12,
+    "max_len": 256,
+    "epochs": 3,
+    "batch_size": 8,
+    "grad_accum": 4,
+    "effective_batch": 32,
+    "lr": 2e-05,
+    "head_lr_mult": 5.0,
+    "weight_decay": 0.01,
+    "warmup_ratio": 0.1,
+    "amp": false,
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce GTX 1650 Ti",
+    "seed": 42,
+    "params_m": 102.4,
+    "train_s": 1364.6,
+    "ms_per_sentence": 61.12,
+    "sentences_per_s": 16.4,
+    "peak_gpu_mb": 2872.4,
+    "infer_peak_gpu_mb": 1645.6,
+    "best_epoch": 3,
+    "inner_val_span_f1": 0.61992,
+    "n_truncated": 122,
+    "n_truncated_rate": 0.1312,
+    "illegal_seq_rate": 0.6484,
+    "illegal_dev": {
+      "illegal_start": 2,
+      "illegal_transition": 1487,
+      "total_seqs": 930,
+      "illegal_seqs": 603,
+      "total_illegal": 1489,
+      "illegal_seq_rate": 0.6484,
+      "illegal_per_seq": 1.601
+    },
+    "illegal_token": {
+      "illegal_start": 0,
+      "illegal_transition": 1381,
+      "total_seqs": 930,
+      "illegal_seqs": 598,
+      "total_illegal": 1381,
+      "illegal_seq_rate": 0.643,
+      "illegal_per_seq": 1.485
+    },
+    "illegal_char": {
+      "illegal_start": 2,
+      "illegal_transition": 1487,
+      "total_seqs": 930,
+      "illegal_seqs": 603,
+      "total_illegal": 1489,
+      "illegal_seq_rate": 0.6484,
+      "illegal_per_seq": 1.601
+    },
+    "hard_constraint_train": false
+  }
+}

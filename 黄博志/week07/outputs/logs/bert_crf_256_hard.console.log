@@ -1,0 +1,12 @@
+C:\Users\hbz\anaconda3\envs\py312\python.exe src/evaluate.py --ckpt outputs/checkpoints/bert_crf_256.pt --hard_constraint
+
+[eval] bert_crf_256_hard | bert_crf_256.pt | decoder=crf | hard=True | device=cuda
+[hard] forbidden transitions=10878, forbidden starts=74
+样本数 930（缺预测 0 条）
+  trigger      P=0.8655 R=0.8237 F1=0.8441 (tp=766 fp=119 fn=164)
+  argument     P=0.6469 R=0.6759 F1=0.6611 (tp=2786 fp=1521 fn=1336)
+  event_exact  P=0.2339 R=0.2226 F1=0.2281 (tp=207 fp=678 fn=723)
+  type_macro_f1 = 0.7726
+  n200 子集：trigger F1=0.8542 arg F1=0.6692 → bert_crf_256_hard_n200.json
+  指标已写入 → C:\Users\hbz\Desktop\work_by_git\hub-qxSY\黄博志\week07\outputs\metrics\disc\bert_crf_256_hard.json
+[dev] trigger=0.8441 arg=0.6611 event=0.2281 | token illegal=0.0000 char illegal=0.0774
