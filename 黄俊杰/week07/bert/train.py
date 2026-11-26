@@ -1,4 +1,4 @@
-﻿"""
+"""
 L2 主线：BERT 序列标注做事件抽取（一次前向同时抽「事件类型 + 触发词 + 论元」）
 
 教学重点：
@@ -196,8 +196,12 @@ def main():
     model = build_model(args, label_scheme).to(device)
     n_params = sum(p.numel() for p in model.parameters())
     n_trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    # 实际层数从权重 config 读：--bert_layers 0 表示「用完整模型」，层数由加载的 checkpoint 决定
+    # （写死 12 会在 rbt3 这类 3 层小模型上把 display_name / meta 标错）
+    n_layers = int(getattr(model.encoder.bert.config, "num_hidden_layers", 12))
+    model_name = Path(str(args.bert_path)).name or "bert"
     print(f"模型参数：{n_params / 1e6:.1f}M（可训练 {n_trainable / 1e6:.1f}M），"
-          f"解码器={args.decoder}，BERT 层数={args.bert_layers or 'full(12)'}")
+          f"解码器={args.decoder}，BERT 层数={n_layers}（{model_name}）")
 
     optimizer = build_optimizer(model, args)
     total_steps = max(1, len(fit_loader) * args.epochs // max(args.grad_accum, 1))
@@ -275,13 +279,14 @@ def main():
 
     lat = timer.summary(len(dev_rows))
     meta = {
-        "display_name": f"BERT-{args.bert_layers or 12}L+{args.decoder.upper()}",
+        "display_name": (f"{model_name}-{n_layers}L+{args.decoder.upper()}"
+                         + ("_hard" if args.hard_constraint else "")),
         "train_s": round(train_s, 1),
         "params_m": round(n_params / 1e6, 1),
         "ms_per_sentence": lat["ms_per_sentence"],
         "peak_gpu_mb": lat["peak_gpu_mb"],
         "decoder": args.decoder,
-        "bert_layers": args.bert_layers or 12,
+        "bert_layers": n_layers,
         "max_len": args.max_len,
         "epochs": args.epochs,
         "lr": args.lr,

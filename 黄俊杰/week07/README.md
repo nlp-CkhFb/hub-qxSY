@@ -92,7 +92,12 @@ python bert/train.py --data_dir data/processed --bert_path hfl/rbt3 \
 
 ## 已知问题
 
+- `bert/train.py` 原来用 `args.bert_layers or 12` 生成 `display_name` / `bert_layers`，
+  传 `0`（用完整模型）时会被标成「12 层」；实际加载的是 `hfl/rbt3` 的 **3 层**（38.6M 参数可证）。
+  已改成从权重 config 读实际层数，并把已提交的 4 个指标 JSON 的这两个字段一并对齐
+  —— **只改显示标签，P/R/F1/tp/fp/fn 一个数字都没动**。
 - dev 里 397 条全部是「有事件」的样本（过滤后），所以本作业**没有做事件检测（有无事件）这一层**，
   77.9% 无事件的句子在原始 `data/dev.jsonl` 里，未参与训练/评测。
 - `data/processed` 是 1,494 / 397（过滤版），不是 1,500 / 400；规则和 BERT 用同一批样本，口径一致。
+  原始 1,500 / 400 子集（`data/train.jsonl`、`data/dev.jsonl`）保留，因为 `compare.py` 默认读它们。
 - 论元层仍是瓶颈：最好的 Event exact F1 只有 0.0891，论元角色长尾（61 个角色、92 个槽位）远没吃透。
