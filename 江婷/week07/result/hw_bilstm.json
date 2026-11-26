@@ -1,0 +1,116 @@
+{
+  "num_samples": 518,
+  "missing_predictions": 0,
+  "trigger": {
+    "precision": 0.8876,
+    "recall": 0.8533,
+    "f1": 0.8701,
+    "tp": 442,
+    "fp": 56,
+    "fn": 76
+  },
+  "argument": {
+    "precision": 0.8111,
+    "recall": 0.6495,
+    "f1": 0.7214,
+    "tp": 554,
+    "fp": 129,
+    "fn": 299
+  },
+  "event_exact": {
+    "precision": 0.6084,
+    "recall": 0.5849,
+    "f1": 0.5965,
+    "tp": 303,
+    "fp": 195,
+    "fn": 215
+  },
+  "per_type": {
+    "临床发现": {
+      "precision": 1.0,
+      "recall": 0.9614,
+      "f1": 0.9803,
+      "tp": 498,
+      "fp": 0,
+      "fn": 20
+    }
+  },
+  "per_role": {
+    "发生状态": {
+      "precision": 1.0,
+      "recall": 0.1818,
+      "f1": 0.3077,
+      "tp": 2,
+      "fp": 0,
+      "fn": 9
+    },
+    "描述词": {
+      "precision": 0.8112,
+      "recall": 0.6503,
+      "f1": 0.7219,
+      "tp": 318,
+      "fp": 74,
+      "fn": 171
+    },
+    "解剖部位": {
+      "precision": 0.8097,
+      "recall": 0.6629,
+      "f1": 0.729,
+      "tp": 234,
+      "fp": 55,
+      "fn": 119
+    }
+  },
+  "type_macro_f1": 0.9803,
+  "method": "hw_bilstm",
+  "gold": "outputs/homework/dev_extract.jsonl",
+  "pred": "/Users/jting/Desktop/learning/新版课程/07抽取任务/code/outputs/disc/pred_hw_bilstm.jsonl",
+  "meta": {
+    "display_name": "BiLSTM-CRF（CRF）",
+    "train_s": 115.7,
+    "params_m": 0.99,
+    "ms_per_sentence": 15.31,
+    "peak_gpu_mb": 0.0,
+    "decoder": "crf",
+    "epochs": 12,
+    "max_len": 128,
+    "emb_dim": 128,
+    "hidden": 256,
+    "lr": 0.001,
+    "best_epoch": 12,
+    "inner_val_span_f1": 0.7826,
+    "num_labels": 9,
+    "vocab_size": 1526,
+    "illegal_dev": {
+      "illegal_start": 0,
+      "illegal_transition": 39,
+      "total_seqs": 518,
+      "illegal_seqs": 34,
+      "total_illegal": 39,
+      "illegal_seq_rate": 0.0656,
+      "illegal_per_seq": 0.075
+    },
+    "n_truncated": 105,
+    "pretrained": false,
+    "seed": 42,
+    "illegal_gold_dev": {
+      "illegal_start": 0,
+      "illegal_transition": 18,
+      "total_seqs": 930,
+      "illegal_seqs": 18,
+      "total_illegal": 18,
+      "illegal_seq_rate": 0.0194,
+      "illegal_per_seq": 0.019
+    },
+    "overlap_conflicts_gold_dev": {
+      "arg": 67,
+      "trigger": 40
+    }
+  },
+  "n200_summary": {
+    "trigger_f1": 0.0,
+    "argument_f1": 0.0,
+    "event_f1": 0.0,
+    "num_samples": 200
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "method": "hw_bert_hard",
+  "argv": [
+    "bert/evaluate_hard_constraint_homework.py",
+    "--ckpt",
+    "outputs/checkpoints/hw_bert_crf.pt",
+    "--run_name",
+    "hw_bert_hard",
+    "--soft_json",
+    "hw_bert_crf",
+    "--data_dir",
+    "outputs/homework",
+    "--device",
+    "mps"
+  ],
+  "args": "Namespace(ckpt='outputs/checkpoints/hw_bert_crf.pt', run_name='hw_bert_hard', soft_json='hw_bert_crf', device='mps', data_dir='outputs/homework')",
+  "env": {
+    "python": "3.12.14",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "time": "2026-11-26 09:39:12",
+    "torch": "2.15.0",
+    "cuda_available": false,
+    "transformers": "5.22.2"
+  },
+  "runtime_s": 10.67,
+  "metrics": {
+    "trigger": 0.8143,
+    "argument": 0.6087,
+    "event_exact": 0.4131
+  },
+  "illegal_dev": {
+    "illegal_start": 0,
+    "illegal_transition": 8,
+    "total_seqs": 518,
+    "illegal_seqs": 3,
+    "total_illegal": 8,
+    "illegal_seq_rate": 0.0058,
+    "illegal_per_seq": 0.015
+  },
+  "ckpt": "outputs/checkpoints/hw_bert_crf.pt",
+  "constraint_note": "解码期硬约束（token 级非法归零）",
+  "notes": "纯评测：从 checkpoint 复评 dev（不训练）"
+}

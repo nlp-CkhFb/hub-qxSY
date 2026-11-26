@@ -1,0 +1,37 @@
+{
+  "method": "hw_rule_adapt",
+  "argv": [
+    "rule/run_rule_homework.py",
+    "--data_dir",
+    "outputs/homework",
+    "--name",
+    "hw_rule_adapt"
+  ],
+  "args": null,
+  "env": {
+    "python": "3.12.14",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "time": "2026-11-26 09:33:13",
+    "torch": "2.15.0",
+    "cuda_available": false,
+    "transformers": "5.22.2"
+  },
+  "runtime_s": 2.36,
+  "metrics": {
+    "trigger": 0.6039,
+    "argument": 0.3191,
+    "event_exact": 0.0039
+  },
+  "type_macro_f1": 0.9942,
+  "num_triggers": 194,
+  "num_arg_terms": 959,
+  "trigger_hit_rate": 0.9884,
+  "failure_counts": {
+    "arg_spurious": 308,
+    "wrong_trigger": 201,
+    "exact": 2,
+    "no_trigger": 6,
+    "arg_missing": 1
+  },
+  "notes": "L0 规则基线·医学适配（触发词词典 + 角色论元词典）"
+}

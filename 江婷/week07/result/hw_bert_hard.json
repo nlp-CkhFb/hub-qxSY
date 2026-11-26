@@ -1,0 +1,106 @@
+{
+  "num_samples": 518,
+  "missing_predictions": 0,
+  "trigger": {
+    "precision": 0.8384,
+    "recall": 0.7915,
+    "f1": 0.8143,
+    "tp": 410,
+    "fp": 79,
+    "fn": 108
+  },
+  "argument": {
+    "precision": 0.6372,
+    "recall": 0.5826,
+    "f1": 0.6087,
+    "tp": 497,
+    "fp": 283,
+    "fn": 356
+  },
+  "event_exact": {
+    "precision": 0.4254,
+    "recall": 0.4015,
+    "f1": 0.4131,
+    "tp": 208,
+    "fp": 281,
+    "fn": 310
+  },
+  "per_type": {
+    "临床发现": {
+      "precision": 1.0,
+      "recall": 0.944,
+      "f1": 0.9712,
+      "tp": 489,
+      "fp": 0,
+      "fn": 29
+    }
+  },
+  "per_role": {
+    "发生状态": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 11
+    },
+    "描述词": {
+      "precision": 0.5751,
+      "recall": 0.5562,
+      "f1": 0.5655,
+      "tp": 272,
+      "fp": 201,
+      "fn": 217
+    },
+    "解剖部位": {
+      "precision": 0.7329,
+      "recall": 0.6374,
+      "f1": 0.6818,
+      "tp": 225,
+      "fp": 82,
+      "fn": 128
+    }
+  },
+  "type_macro_f1": 0.9712,
+  "method": "hw_bert_hard",
+  "gold": "outputs/homework/dev_extract.jsonl",
+  "pred": "/Users/jting/Desktop/learning/新版课程/07抽取任务/code/outputs/disc/pred_hw_bert_hard.jsonl",
+  "meta": {
+    "display_name": "BERT+CRF（解码期硬约束）",
+    "train_s": 0,
+    "ms_per_sentence": 20.45,
+    "decoder": "crf-hard",
+    "max_len": 128,
+    "illegal_dev": {
+      "illegal_start": 0,
+      "illegal_transition": 8,
+      "total_seqs": 518,
+      "illegal_seqs": 3,
+      "total_illegal": 8,
+      "illegal_seq_rate": 0.0058,
+      "illegal_per_seq": 0.015
+    },
+    "base_ckpt": "outputs/checkpoints/hw_bert_crf.pt",
+    "constraint_note": "解码期硬约束：训练好的转移矩阵里非法项 mask 成 -1e4 后重新维特比解码；不是带约束重新训练",
+    "note": "与 bert_crf_256（软约束）同 checkpoint、同 dev，唯一差别是解码是否硬约束",
+    "illegal_gold_dev": {
+      "illegal_start": 0,
+      "illegal_transition": 18,
+      "total_seqs": 930,
+      "illegal_seqs": 18,
+      "total_illegal": 18,
+      "illegal_seq_rate": 0.0194,
+      "illegal_per_seq": 0.019
+    },
+    "overlap_conflicts_gold_dev": {
+      "arg": 67,
+      "trigger": 40
+    }
+  },
+  "n200_summary": {
+    "trigger_f1": 0.0,
+    "argument_f1": 0.0,
+    "event_f1": 0.0,
+    "num_samples": 200
+  }
+}

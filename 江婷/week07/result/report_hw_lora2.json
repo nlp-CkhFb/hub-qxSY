@@ -1,0 +1,21 @@
+{
+  "tag": "hw_lora2",
+  "backend": "sft",
+  "ckpt_type": "lora",
+  "ckpt_dir": "/Users/jting/Desktop/learning/新版课程/07抽取任务/code/outputs/llm/ckpt_hw2/sft_adapter",
+  "model_path": "/Users/jting/.cache/huggingface/hub/models--Qwen--Qwen2.5-0.5B/snapshots/060db6499f32faf8b98477b0a26969ef7d8b9987",
+  "n": 100,
+  "seed": 42,
+  "json_valid_rate": 99.0,
+  "parse_fail": 1,
+  "empty_reply": 0,
+  "repaired": 1,
+  "noise_stripped": 0,
+  "type_invalid": 4,
+  "role_invalid": 3,
+  "trigger_not_in_source": 0,
+  "arg_not_in_source": 17,
+  "latency_mean_s": 1.332,
+  "latency_p50_s": 0.915,
+  "total_s": 133.3
+}

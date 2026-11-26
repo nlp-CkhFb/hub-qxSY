@@ -1,0 +1,85 @@
+{
+  "num_samples": 518,
+  "missing_predictions": 0,
+  "trigger": {
+    "precision": 0.8008,
+    "recall": 0.7683,
+    "f1": 0.7842,
+    "tp": 398,
+    "fp": 99,
+    "fn": 120
+  },
+  "argument": {
+    "precision": 0.4906,
+    "recall": 0.5522,
+    "f1": 0.5196,
+    "tp": 471,
+    "fp": 489,
+    "fn": 382
+  },
+  "event_exact": {
+    "precision": 0.3622,
+    "recall": 0.3475,
+    "f1": 0.3547,
+    "tp": 180,
+    "fp": 317,
+    "fn": 338
+  },
+  "per_type": {
+    "临床发现": {
+      "precision": 1.0,
+      "recall": 0.9595,
+      "f1": 0.9793,
+      "tp": 497,
+      "fp": 0,
+      "fn": 21
+    }
+  },
+  "per_role": {
+    "发生状态": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 11
+    },
+    "描述词": {
+      "precision": 0.4142,
+      "recall": 0.5133,
+      "f1": 0.4584,
+      "tp": 251,
+      "fp": 355,
+      "fn": 238
+    },
+    "解剖部位": {
+      "precision": 0.6215,
+      "recall": 0.6232,
+      "f1": 0.6223,
+      "tp": 220,
+      "fp": 134,
+      "fn": 133
+    }
+  },
+  "type_macro_f1": 0.9793,
+  "method": "hw_bert_crf_rule",
+  "gold": "outputs/homework/dev_extract.jsonl",
+  "pred": "/Users/jting/Desktop/learning/新版课程/07抽取任务/code/outputs/disc/pred_hw_bert_crf_rule.jsonl",
+  "meta": {
+    "display_name": "hw_bert_crf + 触发词回填规则",
+    "train_s": 0,
+    "ms_per_sentence": 0.0,
+    "base_method": "hw_bert_crf",
+    "rule_threshold": 0.5,
+    "n_rules": 0,
+    "n_args_filled": 0,
+    "rules": {},
+    "note": "后处理规则：训练集里某角色与触发词重叠率≥阈值时，推理时若未抽出该角色就用触发词文本回填；不重训模型"
+  },
+  "n200_summary": {
+    "trigger_f1": 0.0,
+    "argument_f1": 0.0,
+    "event_f1": 0.0,
+    "num_samples": 200
+  }
+}

@@ -1,0 +1,17 @@
+触发词炼成：682 条（自动 645 + 人工 37，含去重）
+公司名词典：0 个
+推理完成：3026 句，耗时 0.55s（0.181 ms/句，纯 CPU）
+样本数 3026（缺预测 0 条）
+  trigger      P=0.1626 R=0.1626 F1=0.1626 (tp=492 fp=2533 fn=2534)
+  argument     P=0.0000 R=0.0000 F1=0.0000 (tp=0 fp=0 fn=3608)
+  event_exact  P=0.0317 R=0.0317 F1=0.0317 (tp=96 fp=2929 fn=2930)
+  type_macro_f1 = 0.9998
+  n200 子集：trigger F1=0.0000 arg F1=0.0000 → hw_rule_raw_n200.json
+  指标已写入 → /Users/jting/Desktop/learning/新版课程/07抽取任务/code/outputs/metrics/disc/hw_rule_raw.json
+
+【规则基线失败分析】
+  wrong_trigger   2533 条 (83.7%)
+  arg_missing      396 条 (13.1%)
+  exact             96 条 (3.2%)
+  no_trigger         1 条 (0.0%)
+  触发词命中率（整句有事件的比例）：100.0%

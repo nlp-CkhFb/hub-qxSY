@@ -1,0 +1,127 @@
+{
+  "num_samples": 518,
+  "missing_predictions": 0,
+  "trigger": {
+    "precision": 0.8,
+    "recall": 0.7722,
+    "f1": 0.7859,
+    "tp": 400,
+    "fp": 100,
+    "fn": 118
+  },
+  "argument": {
+    "precision": 0.5196,
+    "recall": 0.5592,
+    "f1": 0.5387,
+    "tp": 477,
+    "fp": 441,
+    "fn": 376
+  },
+  "event_exact": {
+    "precision": 0.366,
+    "recall": 0.3533,
+    "f1": 0.3595,
+    "tp": 183,
+    "fp": 317,
+    "fn": 335
+  },
+  "per_type": {
+    "临床发现": {
+      "precision": 1.0,
+      "recall": 0.9653,
+      "f1": 0.9823,
+      "tp": 500,
+      "fp": 0,
+      "fn": 18
+    }
+  },
+  "per_role": {
+    "发生状态": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 11
+    },
+    "描述词": {
+      "precision": 0.4474,
+      "recall": 0.5215,
+      "f1": 0.4816,
+      "tp": 255,
+      "fp": 315,
+      "fn": 234
+    },
+    "解剖部位": {
+      "precision": 0.6379,
+      "recall": 0.6289,
+      "f1": 0.6334,
+      "tp": 222,
+      "fp": 126,
+      "fn": 131
+    }
+  },
+  "type_macro_f1": 0.9823,
+  "method": "hw_bert_linear",
+  "gold": "outputs/homework/dev_extract.jsonl",
+  "pred": "/Users/jting/Desktop/learning/新版课程/07抽取任务/code/outputs/disc/pred_hw_bert_linear.jsonl",
+  "meta": {
+    "display_name": "BERT-4L+LINEAR",
+    "train_s": 160.3,
+    "params_m": 45.6,
+    "ms_per_sentence": 3.74,
+    "peak_gpu_mb": 0.0,
+    "decoder": "linear",
+    "bert_layers": 4,
+    "max_len": 128,
+    "epochs": 6,
+    "lr": 2e-05,
+    "head_lr_mult": 5.0,
+    "batch_size": 32,
+    "grad_accum": 1,
+    "best_epoch": 6,
+    "inner_val_span_f1": 0.6162,
+    "num_labels": 9,
+    "illegal_dev": {
+      "illegal_start": 0,
+      "illegal_transition": 322,
+      "total_seqs": 518,
+      "illegal_seqs": 190,
+      "total_illegal": 322,
+      "illegal_seq_rate": 0.3668,
+      "illegal_per_seq": 0.622
+    },
+    "illegal_train_pred": {
+      "illegal_start": 0,
+      "illegal_transition": 875,
+      "total_seqs": 1863,
+      "illegal_seqs": 586,
+      "total_illegal": 875,
+      "illegal_seq_rate": 0.3145,
+      "illegal_per_seq": 0.47
+    },
+    "n_truncated": 109,
+    "hard_constraint": false,
+    "seed": 42,
+    "selection_note": "按 train 切出的 10% 内层验证集选 epoch；dev 未参与训练与选点",
+    "illegal_gold_dev": {
+      "illegal_start": 0,
+      "illegal_transition": 18,
+      "total_seqs": 930,
+      "illegal_seqs": 18,
+      "total_illegal": 18,
+      "illegal_seq_rate": 0.0194,
+      "illegal_per_seq": 0.019
+    },
+    "overlap_conflicts_gold_dev": {
+      "arg": 67,
+      "trigger": 40
+    }
+  },
+  "n200_summary": {
+    "trigger_f1": 0.0,
+    "argument_f1": 0.0,
+    "event_f1": 0.0,
+    "num_samples": 200
+  }
+}

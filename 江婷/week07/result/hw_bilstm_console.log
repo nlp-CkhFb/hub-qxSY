@@ -1,0 +1,18 @@
+epoch 1/3 | train_loss=35.6751 | inner_loss=13.7891 inner_spanF1=0.0201 | 42s
+  ★ 内层验证最优 → 保存 hw_bilstm.pt
+epoch 2/3 | train_loss=12.8347 | inner_loss=10.5697 inner_spanF1=0.0860 | 40s
+  ★ 内层验证最优 → 保存 hw_bilstm.pt
+epoch 3/3 | train_loss=9.9767 | inner_loss=8.6505 inner_spanF1=0.1325 | 40s
+  ★ 内层验证最优 → 保存 hw_bilstm.pt
+样本数 3026（缺预测 0 条）
+  trigger      P=0.6119 R=0.0813 F1=0.1435 (tp=246 fp=156 fn=2780)
+  argument     P=0.5350 R=0.0826 F1=0.1431 (tp=298 fp=259 fn=3310)
+  event_exact  P=0.3134 R=0.0416 F1=0.0735 (tp=126 fp=276 fn=2900)
+  type_macro_f1 = 0.2345
+  n200 子集：trigger F1=0.0000 arg F1=0.0000 → hw_bilstm_n200.json
+  指标已写入 → /Users/jting/Desktop/learning/新版课程/07抽取任务/code/outputs/metrics/disc/hw_bilstm.json
+
+【非法 BIO 统计（dev，模型原始输出）】
+  序列数 3026：含非法序列 7 条（0.2%），非法开头 2 处 / 非法转移 5 处
+
+训练耗时 124s | 延迟 20.44 ms/句

@@ -1,0 +1,14 @@
+硬约束已装载：禁止 28 个非法转移对、4 个非法起始标签
+硬约束解码后非法统计：非法开头 0 处 / 非法转移 0 处（含非法序列 0 句）
+样本数 3026（缺预测 0 条）
+  trigger      P=0.4589 R=0.0221 F1=0.0422 (tp=67 fp=79 fn=2959)
+  argument     P=0.3269 R=0.0094 F1=0.0183 (tp=34 fp=70 fn=3574)
+  event_exact  P=0.0479 R=0.0023 F1=0.0044 (tp=7 fp=139 fn=3019)
+  type_macro_f1 = 0.0921
+  n200 子集：trigger F1=0.0000 arg F1=0.0000 → hw_bert_hard_n200.json
+  指标已写入 → /Users/jting/Desktop/learning/新版课程/07抽取任务/code/outputs/metrics/disc/hw_bert_hard.json
+
+【软约束 vs 硬约束（同 checkpoint / 同 dev）】
+  非法序列：301 句 → 0 句
+  非法转移：487 处 → 0 处
+  论元 F1 ：0.0120 → 0.0183

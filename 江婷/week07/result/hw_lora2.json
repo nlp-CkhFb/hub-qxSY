@@ -1,0 +1,89 @@
+{
+  "num_samples": 100,
+  "missing_predictions": 0,
+  "trigger": {
+    "precision": 0.7475,
+    "recall": 0.74,
+    "f1": 0.7437,
+    "tp": 74,
+    "fp": 25,
+    "fn": 26
+  },
+  "argument": {
+    "precision": 0.3902,
+    "recall": 0.3951,
+    "f1": 0.3926,
+    "tp": 64,
+    "fp": 100,
+    "fn": 98
+  },
+  "event_exact": {
+    "precision": 0.1717,
+    "recall": 0.17,
+    "f1": 0.1709,
+    "tp": 17,
+    "fp": 82,
+    "fn": 83
+  },
+  "per_type": {
+    "临床发现": {
+      "precision": 1.0,
+      "recall": 0.95,
+      "f1": 0.9744,
+      "tp": 95,
+      "fp": 0,
+      "fn": 5
+    },
+    "事件类型": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "tp": 0,
+      "fp": 1,
+      "fn": 0
+    },
+    "发生状态": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "tp": 0,
+      "fp": 1,
+      "fn": 0
+    },
+    "疼痛": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "tp": 0,
+      "fp": 2,
+      "fn": 0
+    }
+  },
+  "per_role": {
+    "发生状态": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "tp": 0,
+      "fp": 1,
+      "fn": 4
+    },
+    "描述词": {
+      "precision": 0.3974,
+      "recall": 0.3196,
+      "f1": 0.3543,
+      "tp": 31,
+      "fp": 47,
+      "fn": 66
+    },
+    "解剖部位": {
+      "precision": 0.4459,
+      "recall": 0.541,
+      "f1": 0.4889,
+      "tp": 33,
+      "fp": 41,
+      "fn": 28
+    }
+  },
+  "type_macro_f1": 0.2436
+}

@@ -1,0 +1,32 @@
+  epoch 1 step 50/59 loss=95.1433
+epoch 1/6 | train_loss=84.2092 | inner_loss=19.4050 inner_spanF1=0.1738 | dev_spanF1(监控)=0.1856 | 143s
+  ★ 内层验证最优 → 保存 hw_bert_len256.pt
+  epoch 2 step 50/59 loss=17.9673
+epoch 2/6 | train_loss=17.2390 | inner_loss=11.5659 inner_spanF1=0.4474 | dev_spanF1(监控)=0.4638 | 140s
+  ★ 内层验证最优 → 保存 hw_bert_len256.pt
+  epoch 3 step 50/59 loss=11.6456
+epoch 3/6 | train_loss=11.6633 | inner_loss=9.6869 inner_spanF1=0.5265 | dev_spanF1(监控)=0.5508 | 151s
+  ★ 内层验证最优 → 保存 hw_bert_len256.pt
+  epoch 4 step 50/59 loss=9.4192
+epoch 4/6 | train_loss=9.3338 | inner_loss=9.3522 inner_spanF1=0.5727 | dev_spanF1(监控)=0.5849 | 245s
+  ★ 内层验证最优 → 保存 hw_bert_len256.pt
+  epoch 5 step 50/59 loss=7.7956
+epoch 5/6 | train_loss=7.9077 | inner_loss=9.4656 inner_spanF1=0.5670 | dev_spanF1(监控)=0.5917 | 159s
+  epoch 6 step 50/59 loss=7.3242
+epoch 6/6 | train_loss=7.2422 | inner_loss=8.6795 inner_spanF1=0.5922 | dev_spanF1(监控)=0.6136 | 126s
+  ★ 内层验证最优 → 保存 hw_bert_len256.pt
+加载最优 checkpoint（epoch 6，内层验证 spanF1=0.5922）
+dev 解码：518 句，其中没抽到触发词 20 句
+样本数 518（缺预测 0 条）
+  trigger      P=0.8032 R=0.7722 F1=0.7874 (tp=400 fp=98 fn=118)
+  argument     P=0.4831 R=0.5522 F1=0.5153 (tp=471 fp=504 fn=382)
+  event_exact  P=0.3614 R=0.3475 F1=0.3543 (tp=180 fp=318 fn=338)
+  type_macro_f1 = 0.9803
+  n200 子集：trigger F1=0.0000 arg F1=0.0000 → hw_bert_len256_n200.json
+  指标已写入 → /Users/jting/Desktop/learning/新版课程/07抽取任务/code/outputs/metrics/disc/hw_bert_len256.json
+
+【非法 BIO 统计（dev，模型原始输出）】
+  序列数 518：含非法序列 191 条（36.9%），其中非法开头 0 处、非法转移 353 处
+  训练集对照：含非法序列 624 条（33.5%）
+
+训练耗时 966s | 推理延迟 28.53 ms/句 | 峰值显存 0 MiB

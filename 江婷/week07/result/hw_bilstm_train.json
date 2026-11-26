@@ -1,0 +1,193 @@
+{
+  "method": "hw_bilstm",
+  "argv": [
+    "bilstm_crf/train.py",
+    "--data_dir",
+    "outputs/homework",
+    "--device",
+    "mps",
+    "--max_len",
+    "128",
+    "--batch_size",
+    "32",
+    "--epochs",
+    "12",
+    "--run_name",
+    "hw_bilstm"
+  ],
+  "args": {
+    "decoder": "crf",
+    "max_len": 128,
+    "epochs": 12,
+    "batch_size": 32,
+    "emb_dim": 128,
+    "hidden": 256,
+    "num_layers": 1,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.3,
+    "max_grad_norm": 5.0,
+    "warmup_steps": 100,
+    "inner_val": 0.1,
+    "hard_constraint": false,
+    "device": "mps",
+    "log_every": 50,
+    "seed": 42,
+    "run_name": "hw_bilstm",
+    "mock": false,
+    "data_dir": "outputs/homework"
+  },
+  "env": {
+    "python": "3.12.14",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "time": "2026-11-26 09:36:05",
+    "torch": "2.15.0",
+    "cuda_available": false,
+    "transformers": "5.22.2"
+  },
+  "params": 990572,
+  "log_every": 50,
+  "epochs": [
+    {
+      "epoch": 1,
+      "train_loss": 108.97978,
+      "elapsed_s": 6.4,
+      "val": {
+        "inner_loss": 31.804061344691686,
+        "inner_span_f1": 0.0
+      },
+      "best_so_far": -1.0
+    },
+    {
+      "epoch": 2,
+      "train_loss": 27.333502,
+      "elapsed_s": 12.2,
+      "val": {
+        "inner_loss": 19.095102173941477,
+        "inner_span_f1": 0.1596244131455399
+      },
+      "best_so_far": 0.0
+    },
+    {
+      "epoch": 3,
+      "train_loss": 17.724102,
+      "elapsed_s": 12.7,
+      "val": {
+        "inner_loss": 13.313435282026019,
+        "inner_span_f1": 0.35132032146957515
+      },
+      "best_so_far": 0.159624
+    },
+    {
+      "epoch": 4,
+      "train_loss": 13.084565,
+      "elapsed_s": 6.8,
+      "val": {
+        "inner_loss": 10.781718935285296,
+        "inner_span_f1": 0.43359818388195237
+      },
+      "best_so_far": 0.35132
+    },
+    {
+      "epoch": 5,
+      "train_loss": 10.228047,
+      "elapsed_s": 6.0,
+      "val": {
+        "inner_loss": 9.100733757019043,
+        "inner_span_f1": 0.5140924464487034
+      },
+      "best_so_far": 0.433598
+    },
+    {
+      "epoch": 6,
+      "train_loss": 8.196729,
+      "elapsed_s": 10.8,
+      "val": {
+        "inner_loss": 8.393974781036377,
+        "inner_span_f1": 0.5896589658965897
+      },
+      "best_so_far": 0.514092
+    },
+    {
+      "epoch": 7,
+      "train_loss": 6.744304,
+      "elapsed_s": 12.5,
+      "val": {
+        "inner_loss": 7.102531228746686,
+        "inner_span_f1": 0.6597077244258873
+      },
+      "best_so_far": 0.589659
+    },
+    {
+      "epoch": 8,
+      "train_loss": 5.395829,
+      "elapsed_s": 8.2,
+      "val": {
+        "inner_loss": 6.48292521068028,
+        "inner_span_f1": 0.6804550155118925
+      },
+      "best_so_far": 0.659708
+    },
+    {
+      "epoch": 9,
+      "train_loss": 4.526376,
+      "elapsed_s": 5.8,
+      "val": {
+        "inner_loss": 5.879533222743443,
+        "inner_span_f1": 0.7259565667011375
+      },
+      "best_so_far": 0.680455
+    },
+    {
+      "epoch": 10,
+      "train_loss": 3.691663,
+      "elapsed_s": 10.0,
+      "val": {
+        "inner_loss": 5.351733071463449,
+        "inner_span_f1": 0.7278225806451613
+      },
+      "best_so_far": 0.725957
+    },
+    {
+      "epoch": 11,
+      "train_loss": 3.180972,
+      "elapsed_s": 12.7,
+      "val": {
+        "inner_loss": 5.234301056180682,
+        "inner_span_f1": 0.7646474677259185
+      },
+      "best_so_far": 0.727823
+    },
+    {
+      "epoch": 12,
+      "train_loss": 2.699373,
+      "elapsed_s": 8.6,
+      "val": {
+        "inner_loss": 5.242051839828491,
+        "inner_span_f1": 0.7826086956521738
+      },
+      "best_so_far": 0.764647
+    }
+  ],
+  "total_elapsed_s": 115.7,
+  "finished": true,
+  "best_epoch": 12,
+  "best_inner_val_span_f1": 0.782609,
+  "dev_metrics": {
+    "trigger": 0.8701,
+    "argument": 0.7214,
+    "event_exact": 0.5965
+  },
+  "inference_latency_ms": 15.31,
+  "peak_gpu_mb": 0.0,
+  "illegal_dev": {
+    "illegal_start": 0,
+    "illegal_transition": 39,
+    "total_seqs": 518,
+    "illegal_seqs": 34,
+    "total_illegal": 39,
+    "illegal_seq_rate": 0.0656,
+    "illegal_per_seq": 0.075
+  },
+  "notes": "BiLSTM-CRF（字符级，无预训练）训练过程"
+}

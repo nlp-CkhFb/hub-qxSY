@@ -1,0 +1,153 @@
+{
+  "method": "hw_bert_crf",
+  "argv": [
+    "bert/train.py",
+    "--data_dir",
+    "outputs/homework",
+    "--device",
+    "mps",
+    "--bert_path",
+    "/Users/jting/Desktop/learning/新版课程/04语言模型/bert-base-chinese",
+    "--bert_layers",
+    "4",
+    "--max_len",
+    "128",
+    "--batch_size",
+    "32",
+    "--epochs",
+    "6",
+    "--run_name",
+    "hw_bert_crf"
+  ],
+  "args": {
+    "decoder": "crf",
+    "bert_path": "/Users/jting/Desktop/learning/新版课程/04语言模型/bert-base-chinese",
+    "bert_layers": 4,
+    "max_len": 128,
+    "epochs": 6,
+    "batch_size": 32,
+    "lr": 2e-05,
+    "head_lr_mult": 5.0,
+    "warmup_ratio": 0.1,
+    "grad_accum": 1,
+    "max_grad_norm": 1.0,
+    "weight_decay": 0.01,
+    "dropout": 0.1,
+    "inner_val": 0.1,
+    "hard_constraint": false,
+    "device": "mps",
+    "log_every": 50,
+    "seed": 42,
+    "run_name": "hw_bert_crf",
+    "mock": false,
+    "data_dir": "outputs/homework"
+  },
+  "env": {
+    "python": "3.12.14",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "time": "2026-11-26 09:38:49",
+    "torch": "2.15.0",
+    "cuda_available": false,
+    "transformers": "5.22.2"
+  },
+  "params": 45571692,
+  "log_every": 50,
+  "epochs": [
+    {
+      "epoch": 1,
+      "train_loss": 76.793725,
+      "elapsed_s": 38.1,
+      "val": {
+        "inner_loss": 19.265336717878068,
+        "inner_span_f1": 0.17150395778364116,
+        "dev_span_f1_monitor": 0.17757936507936506
+      },
+      "best_so_far": -1.0
+    },
+    {
+      "epoch": 2,
+      "train_loss": 16.917442,
+      "elapsed_s": 37.6,
+      "val": {
+        "inner_loss": 11.59383910042899,
+        "inner_span_f1": 0.44530493707647634,
+        "dev_span_f1_monitor": 0.4650467289719626
+      },
+      "best_so_far": 0.171504
+    },
+    {
+      "epoch": 3,
+      "train_loss": 11.17054,
+      "elapsed_s": 39.3,
+      "val": {
+        "inner_loss": 9.506668976375035,
+        "inner_span_f1": 0.5333333333333334,
+        "dev_span_f1_monitor": 0.5620490620490621
+      },
+      "best_so_far": 0.445305
+    },
+    {
+      "epoch": 4,
+      "train_loss": 8.857034,
+      "elapsed_s": 39.0,
+      "val": {
+        "inner_loss": 9.208952903747559,
+        "inner_span_f1": 0.5747538048343779,
+        "dev_span_f1_monitor": 0.5892918825561313
+      },
+      "best_so_far": 0.533333
+    },
+    {
+      "epoch": 5,
+      "train_loss": 7.517381,
+      "elapsed_s": 38.4,
+      "val": {
+        "inner_loss": 9.177898134504046,
+        "inner_span_f1": 0.5821025195482189,
+        "dev_span_f1_monitor": 0.5929716820197884
+      },
+      "best_so_far": 0.574754
+    },
+    {
+      "epoch": 6,
+      "train_loss": 6.919659,
+      "elapsed_s": 38.5,
+      "val": {
+        "inner_loss": 8.443695613316127,
+        "inner_span_f1": 0.6153846153846154,
+        "dev_span_f1_monitor": 0.6156571023733617
+      },
+      "best_so_far": 0.582103
+    }
+  ],
+  "total_elapsed_s": 231.5,
+  "finished": true,
+  "best_epoch": 6,
+  "best_inner_val_span_f1": 0.615385,
+  "dev_metrics": {
+    "trigger": 0.7842,
+    "argument": 0.5196,
+    "event_exact": 0.3547
+  },
+  "inference_latency_ms": 19.64,
+  "peak_gpu_mb": 0.0,
+  "illegal_dev": {
+    "illegal_start": 0,
+    "illegal_transition": 358,
+    "total_seqs": 518,
+    "illegal_seqs": 196,
+    "total_illegal": 358,
+    "illegal_seq_rate": 0.3784,
+    "illegal_per_seq": 0.691
+  },
+  "illegal_train_pred_sample": {
+    "illegal_start": 0,
+    "illegal_transition": 942,
+    "total_seqs": 1863,
+    "illegal_seqs": 603,
+    "total_illegal": 942,
+    "illegal_seq_rate": 0.3237,
+    "illegal_per_seq": 0.506
+  },
+  "notes": "BERT 序列标注（crf）训练过程"
+}

@@ -1,0 +1,27 @@
+  epoch 1 step 50/59 loss=56.1336
+epoch 1/4 | train_loss=49.9092 | inner_loss=11.6845 inner_spanF1=0.4483 | dev_spanF1(监控)=0.4522 | 157s
+  ★ 内层验证最优 → 保存 hw_bert_12L.pt
+  epoch 2 step 50/59 loss=10.6535
+epoch 2/4 | train_loss=10.3707 | inner_loss=6.8821 inner_spanF1=0.6485 | dev_spanF1(监控)=0.6248 | 176s
+  ★ 内层验证最优 → 保存 hw_bert_12L.pt
+  epoch 3 step 50/59 loss=6.1828
+epoch 3/4 | train_loss=6.2119 | inner_loss=6.0323 inner_spanF1=0.7193 | dev_spanF1(监控)=0.7095 | 190s
+  ★ 内层验证最优 → 保存 hw_bert_12L.pt
+  epoch 4 step 50/59 loss=4.7276
+epoch 4/4 | train_loss=4.6529 | inner_loss=5.7490 inner_spanF1=0.7321 | dev_spanF1(监控)=0.7133 | 195s
+  ★ 内层验证最优 → 保存 hw_bert_12L.pt
+加载最优 checkpoint（epoch 4，内层验证 spanF1=0.7321）
+dev 解码：518 句，其中没抽到触发词 12 句
+样本数 518（缺预测 0 条）
+  trigger      P=0.8478 R=0.8282 F1=0.8379 (tp=429 fp=77 fn=89)
+  argument     P=0.6247 R=0.6518 F1=0.6380 (tp=556 fp=334 fn=297)
+  event_exact  P=0.4743 R=0.4633 F1=0.4688 (tp=240 fp=266 fn=278)
+  type_macro_f1 = 0.9883
+  n200 子集：trigger F1=0.0000 arg F1=0.0000 → hw_bert_12L_n200.json
+  指标已写入 → /Users/jting/Desktop/learning/新版课程/07抽取任务/code/outputs/metrics/disc/hw_bert_12L.json
+
+【非法 BIO 统计（dev，模型原始输出）】
+  序列数 518：含非法序列 115 条（22.2%），其中非法开头 0 处、非法转移 171 处
+  训练集对照：含非法序列 330 条（17.7%）
+
+训练耗时 722s | 推理延迟 125.61 ms/句 | 峰值显存 0 MiB
